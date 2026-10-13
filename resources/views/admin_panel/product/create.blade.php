@@ -164,15 +164,15 @@
         }
 
         /* Clean modern styling for variants table */
-        #variantsTable input[type=number]::-webkit-inner-spin-button, 
-        #variantsTable input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none; 
-            margin: 0; 
+        #variantsTable input[type=number]::-webkit-inner-spin-button,
+        #variantsTable input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
         #variantsTable input[type=number] {
             -moz-appearance: textfield;
         }
-        #variantsTable .form-control-pro, 
+        #variantsTable .form-control-pro,
         #variantsTable .form-select {
             height: 38px;
             padding: 6px 10px;
@@ -182,7 +182,7 @@
             background-color: #ffffff;
             box-shadow: none;
         }
-        #variantsTable .form-control-pro:focus, 
+        #variantsTable .form-control-pro:focus,
         #variantsTable .form-select:focus {
             border-color: #4f46e5;
             box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
@@ -288,7 +288,7 @@
             align-items: center;
             gap: 8px;
             font-weight: 700;
-            font-size: 0.88rem;
+            font-size: 0.89rem;
             color: #1e293b;
             flex: 1;
             min-width: 0;
@@ -662,7 +662,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                    
+
                                     {{-- MOBILE VARIANTS CONTAINER --}}
                                     <div id="mobileVariantsContainer" style="display: none;">
                                         <div id="mobileVariantsBody" class="d-flex flex-column gap-2 mb-2"></div>
@@ -966,7 +966,7 @@
             function updateVariantMode() {
                 const currentUnit = unitDropdown ? unitDropdown.value : 'by_pieces';
                 const newMode = isWeightUnit(currentUnit) ? 'weight' : 'standard';
-                
+
                 if (variantMode !== newMode) {
                     if (variantsBody.children.length > 0) {
                         Swal.fire({
@@ -1001,7 +1001,7 @@
             function applyVariantModeUI() {
                 const stdCols = document.querySelectorAll('.std-col');
                 const weightCols = document.querySelectorAll('.weight-col');
-                
+
                 if (variantMode === 'weight') {
                     stdCols.forEach(col => col.classList.add('d-none'));
                     weightCols.forEach(col => col.classList.remove('d-none'));
@@ -1085,7 +1085,7 @@
                 if (basePurchInp) basePurchInp.addEventListener('input', updatePriceSuggestions);
                 if (baseWholesaleInp) baseWholesaleInp.addEventListener('input', updatePriceSuggestions);
                 if (baseStockInp) baseStockInp.addEventListener('input', updateVariantStocksFromBase);
-                
+
                 tr.querySelector('.base-name-input').addEventListener('input', function() {
                     manualNames[vid] = true;
                 });
@@ -1133,11 +1133,11 @@
                 const rows = variantsBody.querySelectorAll('tr');
                 rows.forEach((row, index) => {
                     if (index === 0) return;
-                    
+
                     const vid = row.dataset.vid;
                     const factorInput = row.querySelector('.conv-factor-input');
                     const factor = parseFloat(factorInput?.value || 0);
-                    
+
                     const saleInp = row.querySelector('.sale-price-input');
                     const purchInp = row.querySelector('.purch-price-input');
                     const wholesaleInp = row.querySelector('input[name="variant_wholesale_price[]"]');
@@ -1166,7 +1166,7 @@
                 const tr = document.createElement('tr');
                 const vid = 'var_' + Date.now();
                 tr.dataset.vid = vid;
-                
+
                 const isCartonMode = unitDropdown && unitDropdown.value === 'by_cartons';
                 let factor = 1;
                 let suggestedName = productNameInput.value || '';
@@ -1174,7 +1174,7 @@
                     factor = parseFloat(weightGrams) > 10 ? parseFloat((weightGrams / 1000).toFixed(6)) : parseFloat(weightGrams);
                     suggestedName += ` - ${weightGrams}g`;
                 }
-                
+
                 const baseRow = variantsBody.querySelector('tr');
                 const baseSale = parseFloat(baseRow?.querySelector('.base-sale-input')?.value || 0);
                 const basePurch = parseFloat(baseRow?.querySelector('.base-purch-input')?.value || 0);
@@ -1296,7 +1296,7 @@
                 if (isCarton) {
                     convCols.forEach(c => c.classList.remove('d-none'));
                     pieceWtOnlyCols.forEach(c => c.classList.add('d-none'));
-                    
+
                     const baseRow = variantsBody.querySelector('tr');
                     if (baseRow) {
                         const baseConv = baseRow.querySelector('.conv-factor-input');
@@ -1365,7 +1365,7 @@
             function duplicateVariantRow(sourceRow) {
                 addVariantRow();
                 const newRow = variantsBody.lastElementChild;
-                
+
                 const sourceName = sourceRow.querySelector('input[name="variant_name[]"]')?.value || '';
                 const sourceUnit = sourceRow.querySelector('select[name="variant_unit[]"]')?.value || '';
                 const sourceConv = sourceRow.querySelector('input[name="variant_conv_factor[]"]')?.value || '';
@@ -1375,7 +1375,7 @@
                 const sourcePurch = sourceRow.querySelector('input[name="variant_purchase_price[]"]')?.value || '';
                 const sourceAlert = sourceRow.querySelector('input[name="variant_alert_qty[]"]')?.value || '0';
                 const sourceStock = sourceRow.querySelector('input[name="variant_stock[]"]')?.value || '0';
-                
+
                 if(newRow.querySelector('input[name="variant_name[]"]')) newRow.querySelector('input[name="variant_name[]"]').value = sourceName;
                 if(newRow.querySelector('select[name="variant_unit[]"]')) newRow.querySelector('select[name="variant_unit[]"]').value = sourceUnit;
                 if(newRow.querySelector('input[name="variant_conv_factor[]"]')) newRow.querySelector('input[name="variant_conv_factor[]"]').value = sourceConv;
@@ -1385,7 +1385,7 @@
                 if(newRow.querySelector('input[name="variant_purchase_price[]"]')) newRow.querySelector('input[name="variant_purchase_price[]"]').value = sourcePurch;
                 if(newRow.querySelector('input[name="variant_alert_qty[]"]')) newRow.querySelector('input[name="variant_alert_qty[]"]').value = sourceAlert;
                 if(newRow.querySelector('input[name="variant_stock[]"]')) newRow.querySelector('input[name="variant_stock[]"]').value = sourceStock;
-                
+
                 const vid = newRow.dataset.vid;
                 manualPrices[vid + '_sale'] = true;
                 manualPrices[vid + '_purch'] = true;
@@ -1627,7 +1627,7 @@
                 convInp.addEventListener('input', () => {
                     let f = parseFloat(convInp.value);
                     if (isNaN(f)) f = 0;
-                    
+
                     const pieceWt = card.querySelector('.mob-piecewt');
                     const stockAutoInp = card.querySelector('.mob-stock-auto');
                     const saleInp2 = card.querySelector('[data-field="variant_sale_price[]"]');
