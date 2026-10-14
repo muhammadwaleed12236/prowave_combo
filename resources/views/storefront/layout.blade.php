@@ -73,9 +73,10 @@
         .animate-infinite-scroll {
             display: flex;
             width: max-content;
-            animation: infiniteScroll 35s linear infinite;
+            animation: infiniteScroll 75s linear infinite;
         }
-        .animate-infinite-scroll:hover {
+        .animate-infinite-scroll:hover,
+        .animate-infinite-scroll:active {
             animation-play-state: paused;
         }
         @keyframes pulseGlow {

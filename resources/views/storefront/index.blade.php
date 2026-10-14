@@ -5,7 +5,7 @@
 @section('content')
 
 <!-- 1. HERO SECTION (DARK LUXURY OVERLAY + 4 BOTTOM DOCK CARDS) -->
-<section class="relative w-full min-h-[92vh] flex flex-col justify-between overflow-hidden bg-neutral-950">
+<section class="relative w-full min-h-[75vh] sm:min-h-[92vh] flex flex-col justify-between overflow-hidden bg-neutral-950">
     <!-- Background Video / Image Layer with Premium Luxury Overlays -->
     <div class="absolute inset-0 z-0 overflow-hidden">
         @if(!empty($settings['web_home_hero_video']))
@@ -64,30 +64,30 @@
             {{ $settings['web_hero_tagline'] ?? 'FALL / WINTER 2026 COLLECTION • PREMIUM COTTON & LINEN FABRICS' }}
         </div>
 
-        <!-- Action Buttons -->
+        <!-- Action Buttons (Single Row on Mobile, Inline on Desktop) -->
         <div 
             data-aos="fade-up" 
             data-aos-delay="350" 
             data-aos-duration="800"
-            class="flex flex-wrap gap-2.5 sm:gap-3.5 pt-2 w-full sm:w-auto"
+            class="flex flex-row items-center gap-2 sm:gap-3.5 pt-2 w-full sm:w-auto"
         >
             <a 
                 href="{{ !empty($settings['web_hero_btn1_link']) ? $settings['web_hero_btn1_link'] : route('storefront.shop') }}" 
-                class="shimmer-btn animate-pulse-glow bg-[#4F46E5] hover:bg-[#4338CA] text-white px-5 sm:px-8 py-2.5 sm:py-3 rounded-full text-[9px] sm:text-xs font-sans uppercase tracking-wider sm:tracking-[0.2em] font-bold transition-all duration-300 hover:scale-105 active:scale-95 text-center"
+                class="flex-1 sm:flex-initial shimmer-btn animate-pulse-glow bg-[#4F46E5] hover:bg-[#4338CA] text-white px-3 sm:px-8 py-2.5 sm:py-3 rounded-full text-[9px] sm:text-xs font-sans uppercase tracking-wider sm:tracking-[0.2em] font-bold transition-all duration-300 hover:scale-105 active:scale-95 text-center whitespace-nowrap"
             >
                 {{ $settings['web_hero_btn1_text'] ?? 'SHOP COLLECTION' }}
             </a>
             <a 
                 href="{{ !empty($settings['web_hero_btn2_link']) ? $settings['web_hero_btn2_link'] : route('storefront.shop', ['tag' => 'Featured']) }}" 
-                class="border border-white/50 hover:border-white text-white hover:bg-white/15 px-5 sm:px-8 py-2.5 sm:py-3 rounded-full text-[9px] sm:text-xs font-sans uppercase tracking-wider sm:tracking-[0.2em] font-bold transition-all duration-300 hover:scale-105 active:scale-95 text-center"
+                class="flex-1 sm:flex-initial border border-white/50 hover:border-white text-white hover:bg-white/15 px-3 sm:px-8 py-2.5 sm:py-3 rounded-full text-[9px] sm:text-xs font-sans uppercase tracking-wider sm:tracking-[0.2em] font-bold transition-all duration-300 hover:scale-105 active:scale-95 text-center whitespace-nowrap"
             >
                 {{ $settings['web_hero_btn2_text'] ?? 'EXPLORE MENSWEAR' }}
             </a>
         </div>
     </div>
 
-    <!-- Hero Bottom Dock / 4 Featured Cards (Frosted Glassmorphic Overlay) -->
-    <div class="relative z-20 w-full border-t border-white/20 bg-black/60 backdrop-blur-md overflow-hidden">
+    <!-- Hero Bottom Dock / 4 Featured Cards (Frosted Glassmorphic Overlay) - Hidden on Mobile, Shown on Desktop -->
+    <div class="relative z-20 w-full border-t border-white/20 bg-black/60 backdrop-blur-md overflow-hidden hidden md:block">
         <div class="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/15">
             
             <!-- Card 1 -->
