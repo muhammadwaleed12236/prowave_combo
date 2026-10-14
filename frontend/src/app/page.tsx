@@ -95,7 +95,10 @@ export default function Home() {
     queryKey: ["home-products"],
     queryFn: async () => {
       const res = await api.get("/products");
-      return res.data?.data?.data as Product[] || [];
+      if (Array.isArray(res.data?.data?.data)) return res.data.data.data as Product[];
+      if (Array.isArray(res.data?.data)) return res.data.data as Product[];
+      if (Array.isArray(res.data)) return res.data as Product[];
+      return [];
     },
   });
 
@@ -103,7 +106,9 @@ export default function Home() {
     queryKey: ["home-categories-v5"],
     queryFn: async () => {
       const res = await api.get("/categories");
-      return res.data?.data as Category[] || [];
+      if (Array.isArray(res.data?.data)) return res.data.data as Category[];
+      if (Array.isArray(res.data)) return res.data as Category[];
+      return [];
     },
     staleTime: 0,
     refetchOnMount: true,

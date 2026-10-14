@@ -14,8 +14,14 @@ export const getAssetUrl = (path: string | undefined | null): string => {
     const httpIdx = clean.indexOf("http");
     return clean.substring(httpIdx);
   }
-  const base = (process.env.NEXT_PUBLIC_ASSET_URL || "http://127.0.0.1:8000").replace(/\/$/, "");
   const cleanPath = clean.startsWith("/") ? clean : `/${clean}`;
+
+  // If in browser on live domain, return relative path directly
+  if (typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+    return cleanPath;
+  }
+
+  const base = (process.env.NEXT_PUBLIC_ASSET_URL || "http://127.0.0.1:8000").replace(/\/$/, "");
   return base ? `${base}${cleanPath}` : cleanPath;
 };
 
