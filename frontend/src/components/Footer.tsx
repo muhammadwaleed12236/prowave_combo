@@ -11,14 +11,23 @@ export default function Footer() {
   const [whatsappPhone, setWhatsappPhone] = useState("");
   const { data: settings } = useSettings();
 
-  const whatsappNum = settings?.web_whatsapp_number 
-    ? settings.web_whatsapp_number.replace(/\D/g, '') 
-    : "923001234567";
+  const formatWhatsAppNumber = (num?: string) => {
+    if (!num) return "923173340926";
+    let cleaned = num.replace(/\D/g, "");
+    if (cleaned.startsWith("0")) {
+      cleaned = "92" + cleaned.substring(1);
+    } else if (cleaned.length === 10 && cleaned.startsWith("3")) {
+      cleaned = "92" + cleaned;
+    }
+    return cleaned;
+  };
+
+  const whatsappNum = formatWhatsAppNumber(settings?.web_whatsapp_number);
 
   const handleWhatsappCommunitySubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (whatsappPhone.trim()) {
-      const msg = encodeURIComponent(`Hi TrendHub! I would like to join the TrendHub VIP WhatsApp Community. My phone number is: ${whatsappPhone}`);
+      const msg = encodeURIComponent(`Hi ${settings?.web_site_name || "TrendHub"}! I would like to join the VIP WhatsApp Community. My phone number is: ${whatsappPhone}`);
       window.open(`https://wa.me/${whatsappNum}?text=${msg}`, "_blank");
       setWhatsappPhone("");
     }
@@ -29,50 +38,8 @@ export default function Footer() {
   };
 
   return (
-    <footer className="w-full bg-[#080808] text-white border-t border-white/10 pt-16 pb-10 font-sans select-none relative overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-6 space-y-16">
-        
-        {/* 1. TOP JOIN OUR WHATSAPP COMMUNITY VIP BANNER */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-950/50 via-neutral-950 to-neutral-900 border border-emerald-500/30 p-8 sm:p-12 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8"
-        >
-          <div className="space-y-2 text-center lg:text-left max-w-[600px]">
-            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.3em] text-emerald-400 flex items-center justify-center lg:justify-start gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              JOIN OUR WHATSAPP COMMUNITY
-            </span>
-            <h3 className="font-serif text-2xl sm:text-4xl tracking-wide font-normal text-white uppercase">
-              Get VIP Drops & Flash Sales On WhatsApp
-            </h3>
-            <p className="text-xs sm:text-sm text-neutral-400 font-sans font-light leading-relaxed">
-              Enter your WhatsApp number below to join our exclusive VIP group for instant drop alerts, secret promo codes, and private sales.
-            </p>
-          </div>
-
-          <form onSubmit={handleWhatsappCommunitySubmit} className="w-full lg:w-auto flex flex-col sm:flex-row gap-3 min-w-[320px] sm:min-w-[440px]">
-            <input
-              type="tel"
-              placeholder="ENTER YOUR WHATSAPP NUMBER (+92...)"
-              value={whatsappPhone}
-              onChange={(e) => setWhatsappPhone(e.target.value)}
-              className="bg-black/60 border border-emerald-500/35 rounded-md px-5 py-3.5 text-xs tracking-wider uppercase text-white placeholder-neutral-500 focus:outline-none focus:border-emerald-400 transition-all flex-grow shadow-inner"
-              required
-            />
-            <button
-              type="submit"
-              className="bg-emerald-500 hover:bg-emerald-400 text-white text-xs uppercase tracking-[0.2em] font-sans font-bold px-8 py-3.5 rounded-md transition-all duration-300 shadow-lg shrink-0 cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95"
-            >
-              <span>JOIN COMMUNITY</span>
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-              </svg>
-            </button>
-          </form>
-        </motion.div>
+    <footer className="w-full bg-[#080808] text-white border-t border-white/10 pt-10 pb-10 font-sans select-none relative overflow-hidden">
+      <div className="max-w-[1400px] mx-auto px-6 space-y-12">
 
         {/* 2. VALUE PROPOSITION TRIPLE BADGES WITH ANIMATIONS */}
         <motion.div 
@@ -246,14 +213,28 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: Outlets & Hours */}
+          {/* Column 4: Outlets & Hours & Contact Details */}
           <div className="space-y-4">
             <h5 className="text-[11px] font-bold uppercase tracking-[0.25em] text-indigo-400">Store Hours & Contact</h5>
             <div className="space-y-2 text-xs text-neutral-400 font-sans">
               <p className="text-white font-medium">Flagship Store Hours:</p>
               <p>Monday - Sunday: 11:00 AM - 10:00 PM</p>
-              <p className="pt-2 text-white font-medium">Customer Support Email:</p>
-              <p className="text-indigo-300">{settings?.web_contact_email || "support@trendhubstore.pk"}</p>
+              
+              {settings?.web_contact_phone && (
+                <div className="pt-1">
+                  <p className="text-white font-medium">Phone Support:</p>
+                  <a href={`tel:${settings.web_contact_phone}`} className="text-neutral-300 hover:text-white transition-colors">
+                    {settings.web_contact_phone}
+                  </a>
+                </div>
+              )}
+
+              <div className="pt-1">
+                <p className="text-white font-medium">Customer Support Email:</p>
+                <a href={`mailto:${settings?.web_contact_email || "trendhubstorepk1@gmail.com"}`} className="text-indigo-300 hover:text-indigo-200 transition-colors">
+                  {settings?.web_contact_email || "trendhubstorepk1@gmail.com"}
+                </a>
+              </div>
             </div>
 
             <div className="pt-2">

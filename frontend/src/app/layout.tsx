@@ -38,7 +38,7 @@ export default function RootLayout({
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col font-sans bg-white text-[#111111]">
         <QueryProvider>
-          <Preloader />
+          {/* Instant render without lag preloader */}
           <Header />
           <main className="flex-1">
             {children}

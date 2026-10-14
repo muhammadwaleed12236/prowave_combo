@@ -16,9 +16,20 @@ export default function WhatsAppButton() {
     return null;
   }
 
-  const whatsappNumber = settings?.web_whatsapp_number || "+923000000000";
-  const whatsappMessage = "Hello, I want to know more about your products!";
-  const url = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(whatsappMessage)}`;
+  const formatWhatsAppNumber = (num?: string) => {
+    if (!num) return "923173340926";
+    let cleaned = num.replace(/\D/g, "");
+    if (cleaned.startsWith("0")) {
+      cleaned = "92" + cleaned.substring(1);
+    } else if (cleaned.length === 10 && cleaned.startsWith("3")) {
+      cleaned = "92" + cleaned;
+    }
+    return cleaned;
+  };
+
+  const whatsappNumber = formatWhatsAppNumber(settings?.web_whatsapp_number);
+  const whatsappMessage = `Hello ${settings?.web_site_name || "TrendHub"}! I want to know more about your menswear collection.`;
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
     <Link

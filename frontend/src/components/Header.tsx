@@ -128,7 +128,8 @@ export default function Header() {
   }, []);
 
   const isHome = pathname === "/";
-  const logoUrl = settings?.company_logo || settings?.web_site_logo || settings?.site_logo || settings?.logo_url || settings?.logo;
+  const logoUrl = settings?.web_site_logo || settings?.site_logo || settings?.company_logo || settings?.logo_url || settings?.logo;
+  const [logoLoadFailed, setLogoLoadFailed] = useState(false);
 
   return (
     <>
@@ -173,28 +174,18 @@ export default function Header() {
               </button>
             </div>
 
-            {/* Center Framed Brand Box (Sleek Refined Design with Logo Support) */}
-            <div className="flex flex-col items-center justify-center flex-1 lg:flex-initial max-w-[220px] sm:max-w-none px-1">
-              <div className="relative border border-white/35 bg-black/70 backdrop-blur-md px-3 sm:px-6 md:px-7 py-1 text-center flex flex-col items-center rounded-[2px] hover:border-white/70 transition-all duration-300 shadow-xl group w-full sm:w-auto">
+            {/* Center Framed Brand Box (Sleek Refined Typography Design) */}
+            <div className="flex flex-col items-center justify-center flex-1 lg:flex-initial max-w-[240px] sm:max-w-none px-1">
+              <div className="relative border border-white/35 bg-black/70 backdrop-blur-md px-4 sm:px-7 py-1 text-center flex flex-col items-center rounded-[2px] hover:border-white/70 transition-all duration-300 shadow-xl group w-full sm:w-auto">
                 {/* Subtle top corner accent lines */}
                 <span className="absolute -top-0.5 left-2 w-2.5 h-[1px] bg-white/70 hidden sm:block" />
                 <span className="absolute -top-0.5 right-2 w-2.5 h-[1px] bg-white/70 hidden sm:block" />
                 
                 <Link
                   href="/"
-                  className="flex items-center justify-center font-serif text-[11px] sm:text-sm md:text-base tracking-[0.2em] sm:tracking-[0.3em] font-semibold uppercase text-white hover:opacity-90 transition-opacity whitespace-nowrap overflow-hidden text-ellipsis"
+                  className="flex items-center justify-center font-serif text-[11px] sm:text-sm md:text-base tracking-[0.25em] sm:tracking-[0.35em] font-bold uppercase text-white hover:opacity-90 transition-opacity whitespace-nowrap overflow-hidden text-ellipsis py-0.5"
                 >
-                  {logoUrl ? (
-                    <img
-                      src={getAssetUrl(logoUrl)}
-                      alt={settings?.web_site_name || "TRENDHUB STORE"}
-                      className="h-5 sm:h-7 w-auto max-w-[130px] sm:max-w-[170px] object-contain py-0.5 filter brightness-100 group-hover:scale-[1.02] transition-transform duration-300"
-                    />
-                  ) : (
-                    <span className="font-serif tracking-[0.2em] sm:tracking-[0.3em] font-bold text-white text-[11px] sm:text-sm md:text-base">
-                      {settings?.web_site_name || "TRENDHUB STORE"}
-                    </span>
-                  )}
+                  {settings?.web_site_name ? `${settings.web_site_name} STORE` : "TRENDHUB STORE"}
                 </Link>
                 <div className="w-full border-t border-white/20 mt-0.5 pt-0.5 flex items-center justify-center gap-1.5 sm:gap-2 text-[7px] sm:text-[8px] uppercase tracking-[0.15em] sm:tracking-[0.2em] font-sans text-white/80 whitespace-nowrap">
                   <Link href={user ? "/dashboard" : "/login"} className="hover:text-indigo-300 transition-colors duration-200">
@@ -202,7 +193,7 @@ export default function Header() {
                   </Link>
                   <span className="text-white/40">•</span>
                   <button onClick={() => setIsCartOpen(true)} className="hover:text-indigo-300 transition-colors duration-200 cursor-pointer">
-                    BAG ({isMounted ? cartItemsCount : 0})
+                    SHOPPING BAG ({isMounted ? cartItemsCount : 0})
                   </button>
                 </div>
               </div>

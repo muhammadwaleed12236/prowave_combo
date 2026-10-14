@@ -43,12 +43,21 @@ export const resolveProductImageUrl = (imagePath: string | null | undefined): st
 };
 
 const FALLBACK_MENSWEAR_IMAGES = [
-  "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?q=80&w=600",
-  "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=600",
-  "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=600",
-  "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600",
-  "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?q=80&w=600",
-  "https://images.unsplash.com/photo-1516257984-b1b4d707412e?q=80&w=600",
+  "/placeholders/outfitter_prod_1.jpg",
+  "/placeholders/outfitter_prod_2.jpg",
+  "/placeholders/outfitter_prod_3.jpg",
+  "/placeholders/outfitter_prod_4.jpg",
+  "/placeholders/outfitter_prod_5.jpg",
+  "/placeholders/outfitter_prod_6.jpg",
+  "/placeholders/outfitter_prod_7.jpg",
+  "/placeholders/outfitter_prod_8.jpg",
+  "/placeholders/product_1_main.jpg",
+  "/placeholders/product_2_main.jpg",
+  "/placeholders/product_3_main.jpg",
+  "/placeholders/product_4_main.jpg",
+  "/placeholders/product_5_main.jpg",
+  "/placeholders/product_6_main.jpg",
+  "/placeholders/product_7_main.jpg",
 ];
 
 export const getProductFallbackImage = (_productId?: number | string): string => {

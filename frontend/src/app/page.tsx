@@ -255,36 +255,21 @@ export default function Home() {
 
         {/* Main Hero Content (Fully Dynamic via Admin Settings) */}
         <div className="relative z-20 max-w-[1400px] mx-auto w-full px-6 sm:px-12 my-auto py-10 flex flex-col items-start justify-center space-y-5">
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-2 max-w-[680px]"
-          >
+          <div className="space-y-2 max-w-[680px]">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-white leading-tight uppercase">
               {settings?.web_hero_title || (settings?.web_site_name ? `${settings.web_site_name} Menswear` : "TrendHub Menswear")}
             </h1>
             <p className="text-sm sm:text-base md:text-lg font-sans text-gray-200 tracking-wide font-light">
               {settings?.web_hero_subtitle || "Elevated Men's Apparel — Shirts, Trousers, Polos & Tailored Shorts"}
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-[10px] sm:text-xs font-sans uppercase tracking-[0.2em] text-gray-300 font-semibold"
-          >
+          <div className="text-[10px] sm:text-xs font-sans uppercase tracking-[0.2em] text-gray-300 font-semibold">
             {settings?.web_hero_tagline || "FALL / WINTER 2026 COLLECTION • PREMIUM COTTON & LINEN FABRICS"}
-          </motion.div>
+          </div>
 
           {/* Action Buttons (Fully Dynamic) */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-wrap gap-3 pt-1"
-          >
+          <div className="flex flex-wrap gap-3 pt-1">
             <Link
               href={settings?.web_hero_btn1_link || "/shop"}
               className="bg-[#4F46E5] hover:bg-[#4338CA] text-white px-6 sm:px-7 py-2.5 sm:py-3 rounded-full text-[10px] sm:text-xs font-sans uppercase tracking-[0.2em] font-bold shadow-[0_0_20px_rgba(79,70,229,0.4)] transition-all duration-300 hover:scale-105"
@@ -297,7 +282,7 @@ export default function Home() {
             >
               {settings?.web_hero_btn2_text || "EXPLORE MENSWEAR"}
             </Link>
-          </motion.div>
+          </div>
         </div>
 
         {/* Hero Bottom Dock / 4 Featured Cards (Fully Dynamic via Admin Settings) */}
@@ -622,89 +607,66 @@ export default function Home() {
       </section>
 
       {/* 2. DYNAMIC NEW ARRIVALS SLIDER (REFERENCE MATCH) */}
+      {/* 2. DYNAMIC NEW ARRIVALS SECTION */}
       {newArrivals && newArrivals.length > 0 && (
-        <section className="w-full bg-white py-20 overflow-hidden border-t border-gray-100">
-          <div className="max-w-[1400px] mx-auto px-6 flex flex-col lg:flex-row items-center">
+        <section className="w-full bg-[#fafafa] py-20 overflow-hidden border-t border-gray-100 select-none">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 space-y-10">
             
-            {/* Left: Large Featured Image */}
-            <div className="w-full lg:w-[38%] xl:w-[32%] relative aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] bg-gray-200 overflow-hidden group rounded-[2px] z-0">
-              <img 
-                src={settings?.web_home_banner_image ? getAssetUrl(settings.web_home_banner_image) : "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=800"} 
-                alt="New Arrivals" 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-black/5"></div>
-            </div>
-
-            {/* Right: Category Slider (Overlapping) */}
-            <div className="w-full lg:w-[68%] xl:w-[73%] flex flex-col justify-center pt-8 lg:pt-0 lg:-ml-24 xl:-ml-28 z-10 overflow-hidden">
+            {/* Header & Controls */}
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="space-y-1 text-center sm:text-left">
+                <span className="text-[10px] sm:text-xs font-sans font-bold uppercase tracking-[0.3em] text-indigo-600 block">
+                  Fresh Modern Drops
+                </span>
+                <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl tracking-wide font-normal text-neutral-900 uppercase">
+                  New Arrivals
+                </h2>
+              </div>
               
-              {/* Header & Controls */}
-              <div className="flex flex-col sm:flex-row justify-between items-center mb-8 space-y-4 sm:space-y-0 p-2 lg:p-0">
-                <div className="space-y-1 text-center w-full">
-                  <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl tracking-wide font-light text-black">
-                    New Arrivals
-                  </h2>
-                </div>
-                
-                {/* Slider Arrows (Positioned at right edge) */}
-                <div className="flex gap-2 sm:absolute sm:right-6 lg:right-0">
-                  <button 
-                    onClick={() => scrollCategories("left")}
-                    className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-black hover:text-white transition-colors disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-black cursor-pointer bg-white"
-                  >
-                    <ChevronLeft size={20} strokeWidth={1.5} />
-                  </button>
-                  <button 
-                    onClick={() => scrollCategories("right")}
-                    className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-black hover:text-white transition-colors cursor-pointer bg-white"
-                  >
-                    <ChevronRight size={20} strokeWidth={1.5} />
-                  </button>
-                </div>
+              {/* Slider Arrows */}
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => scrollCategories("left")}
+                  className="w-10 h-10 rounded-full border border-gray-200 bg-white text-black flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-sm cursor-pointer hover:scale-105 active:scale-95"
+                  aria-label="Previous Products"
+                >
+                  <ChevronLeft size={18} strokeWidth={2} />
+                </button>
+                <button 
+                  onClick={() => scrollCategories("right")}
+                  className="w-10 h-10 rounded-full border border-gray-200 bg-white text-black flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-sm cursor-pointer hover:scale-105 active:scale-95"
+                  aria-label="Next Products"
+                >
+                  <ChevronRight size={18} strokeWidth={2} />
+                </button>
               </div>
-
-              {/* Slider Track */}
-              <div 
-                ref={sliderRef}
-                className="flex gap-2 sm:gap-2.5 overflow-x-auto snap-x snap-mandatory pb-4"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              >
-                {/* Hide webkit scrollbar via inline styles equivalent */}
-                <style dangerouslySetInnerHTML={{__html: `::-webkit-scrollbar { display: none; }`}} />
-                
-                {newArrivals.map((product) => {
-                  const pMainImage = product.web_main_image
-                    ? getAssetUrl(`uploads/products/${product.web_main_image}`)
-                    : product.image
-                    ? getAssetUrl(`uploads/products/${product.image}`)
-                    : getProductFallbackImage(product.id);
-
-                  return (
-                    <Link
-                      key={product.id}
-                      href={`/product/${product.id}`}
-                      className="group relative flex-none w-full sm:w-[calc((100%-10px)/2)] lg:w-[calc((100%-20px)/3)] aspect-[3/4] bg-gray-100 overflow-hidden snap-start block rounded-[2px]"
-                    >
-                      <img
-                        src={pMainImage}
-                        alt={product.item_name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                        {/* Name Label Overlay displaying Category matching the Reference Image */}
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white px-4 py-1.5 text-[9px] uppercase tracking-[0.2em] font-sans font-bold whitespace-nowrap rounded-[2px] transition-all duration-300 group-hover:bg-black/75">
-                          {product.category_relation?.name || "Collection"}
-                        </div>
-                    </Link>
-                  );
-                })}
-                {/* Spacer to act as padding-right at the end of the scroll */}
-                <div className="flex-none w-4 sm:w-6 lg:w-12 h-1" />
-              </div>
-
             </div>
+
+            {/* Slider Track with Standard Clean ProductCards */}
+            <div 
+              ref={sliderRef}
+              className="flex gap-5 sm:gap-6 overflow-x-auto scrollbar-none scroll-smooth pb-4"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {newArrivals.map((product) => (
+                <div
+                  key={`newarrival-${product.id}`}
+                  className="w-[230px] sm:w-[260px] md:w-[280px] shrink-0"
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center pt-2">
+              <Link
+                href="/shop?promo_tag=New Arrival"
+                className="bg-[#222222] hover:bg-black text-white px-8 py-3.5 text-xs uppercase tracking-[0.2em] font-sans font-bold transition-all duration-300 inline-block rounded-xs hover:scale-105 shadow-sm"
+              >
+                Explore all new arrivals
+              </Link>
+            </div>
+
           </div>
         </section>
       )}
@@ -759,34 +721,43 @@ export default function Home() {
 
 
 
-      {/* 8. STORE LOCATOR BANNER (HIGH CONTRAST LUXURY DESIGN) */}
-      <section className="w-full bg-neutral-900 border-t border-neutral-800 select-none overflow-hidden">
-        <Link href="/store-locator" className="block relative w-full h-[320px] sm:h-[480px] overflow-hidden group">
-          <motion.div style={{ y: storeParallaxY }} className="w-full h-[120%] -mt-[10%]">
-            <img
-              src={settings?.web_store_locator_banner_image 
-                ? getAssetUrl(settings.web_store_locator_banner_image) 
-                : "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1600"}
-              alt="Store Locator"
-              className="w-full h-full object-cover object-center filter brightness-75 group-hover:scale-105 transition-transform duration-1000"
-            />
-          </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/40 flex flex-col items-center justify-center p-6 text-center space-y-4">
-            <span className="text-[10px] sm:text-xs font-sans font-bold uppercase tracking-[0.3em] text-indigo-400">
-              Visit Our Exclusive Outlets
-            </span>
-            <h3 className="text-white text-3xl sm:text-5xl md:text-6xl uppercase tracking-[0.2em] font-serif font-light drop-shadow-md">
-              STORE LOCATOR
-            </h3>
-            <p className="text-gray-300 text-xs sm:text-sm uppercase tracking-widest font-sans font-light max-w-[500px]">
-              Discover our flagship menswear stores near you. Your favorites are now just a visit away!
-            </p>
-            <span className="mt-4 bg-white hover:bg-indigo-600 text-black hover:text-white text-[10px] sm:text-xs uppercase tracking-[0.25em] font-sans font-bold px-8 py-3.5 transition-all duration-300 shadow-xl rounded-xs">
-              FIND A STORE NEAR YOU
-            </span>
+      {/* 4. DYNAMIC BEST SELLERS SECTION */}
+      {effectiveHomeProducts.length > 0 && (
+        <section className="bg-white py-20 border-t border-gray-100 select-none">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 space-y-10">
+            <div className="text-center space-y-3">
+              <span className="text-[10px] sm:text-xs font-sans font-bold uppercase tracking-[0.3em] text-indigo-600 block">
+                Top Rated Customer Favorites
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl tracking-wide font-normal text-neutral-900 uppercase">
+                Best Sellers
+              </h2>
+              <p className="text-xs sm:text-sm text-gray-500 max-w-[550px] mx-auto font-sans font-light">
+                Our most in-demand wardrobe staples crafted with unmatched precision and premium fabrics.
+              </p>
+            </div>
+
+            {/* Dynamic Product Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+              {(effectiveHomeProducts.filter(p => p.promo_tag === "Best Seller" || p.promo_tag === "Trending").length > 0
+                ? effectiveHomeProducts.filter(p => p.promo_tag === "Best Seller" || p.promo_tag === "Trending")
+                : effectiveHomeProducts.slice(0, 10)
+              ).map((product) => (
+                <ProductCard key={`bestseller-${product.id}`} product={product} />
+              ))}
+            </div>
+
+            <div className="pt-6 text-center">
+              <Link
+                href="/shop?promo_tag=Best Seller"
+                className="bg-[#222222] hover:bg-black text-white px-9 py-3.5 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-sans font-bold transition-all duration-300 inline-block rounded-xs hover:scale-105 shadow-md"
+              >
+                View all best sellers
+              </Link>
+            </div>
           </div>
-        </Link>
-      </section>
+        </section>
+      )}
       </div>
     </div>
   );
