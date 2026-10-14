@@ -42,6 +42,27 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
+        html {
+            overflow-x: hidden !important;
+            overflow-x: clip;
+            width: 100% !important;
+            max-width: 100vw !important;
+        }
+        body {
+            overflow-x: hidden !important;
+            overflow-x: clip;
+            width: 100% !important;
+            max-width: 100vw !important;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        [data-aos] {
+            max-width: 100%;
+        }
         [x-cloak] { display: none !important; }
         .scrollbar-none::-webkit-scrollbar { display: none; }
         .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
@@ -101,21 +122,21 @@
 <body 
     x-data="storefrontApp()" 
     x-init="initApp()" 
-    class="min-h-full flex flex-col font-sans bg-white text-[#111111] antialiased selection:bg-neutral-900 selection:text-white"
+    class="min-h-full w-full max-w-full overflow-x-hidden flex flex-col font-sans bg-white text-[#111111] antialiased selection:bg-neutral-900 selection:text-white"
 >
     <!-- Top Announcement Marquee Bar -->
-    <div class="bg-neutral-950 text-neutral-300 py-1.5 px-4 text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-center border-b border-white/10 flex items-center justify-center gap-3">
-        <span>✨ {{ $settings['web_home_banner_text'] ?? 'COMPLIMENTARY NATIONWIDE SHIPPING ON ORDERS OVER PKR 5,000' }}</span>
+    <div class="bg-neutral-950 text-neutral-300 py-1.5 px-3 sm:px-4 text-[10px] sm:text-xs font-medium tracking-wider sm:tracking-[0.2em] uppercase text-center border-b border-white/10 flex items-center justify-center gap-3 overflow-hidden">
+        <span class="truncate">✨ {{ $settings['web_home_banner_text'] ?? 'COMPLIMENTARY NATIONWIDE SHIPPING ON ORDERS OVER PKR 5,000' }}</span>
         <span class="hidden md:inline text-white/30">|</span>
         <span class="hidden md:inline">FALL / WINTER 2026 LUXURY MENSWEAR</span>
     </div>
 
     <!-- Main Navigation Header (Framed Luxury Garments Aesthetic) -->
-    <header class="sticky top-0 z-40 w-full bg-neutral-950/95 backdrop-blur-md text-white border-b border-white/15 shadow-2xl transition-all duration-300">
-        <div class="max-w-[1400px] mx-auto px-4 sm:px-8 py-2 flex items-center justify-between">
+    <header class="sticky top-0 z-40 w-full bg-neutral-950/95 backdrop-blur-md text-white border-b border-white/15 shadow-2xl transition-all duration-300 overflow-x-hidden">
+        <div class="max-w-[1400px] mx-auto px-2 sm:px-8 py-2 flex items-center justify-between gap-1 sm:gap-4 w-full">
             
             <!-- Left Nav Links (Garments Store Style) -->
-            <div class="hidden lg:flex items-center gap-4 text-[10px] sm:text-xs font-sans font-bold tracking-[0.2em] uppercase border-y border-white/20 py-1.5 px-5">
+            <div class="hidden lg:flex items-center gap-4 text-[10px] sm:text-xs font-sans font-bold tracking-[0.2em] uppercase border-y border-white/20 py-1.5 px-5 shrink-0">
                 <a href="{{ route('storefront.shop') }}" class="hover:text-indigo-400 transition-colors duration-200">
                     Shop Men
                 </a>
@@ -130,44 +151,44 @@
             </div>
 
             <!-- Mobile Hamburger Menu Button -->
-            <div class="flex lg:hidden items-center">
+            <div class="flex lg:hidden items-center shrink-0">
                 <button
                     @click="mobileMenuOpen = true"
-                    class="flex items-center gap-1.5 cursor-pointer focus:outline-none hover:opacity-80 p-2 text-white"
+                    class="flex items-center gap-1 cursor-pointer focus:outline-none hover:opacity-80 p-1.5 text-white"
                     aria-label="Open menu"
                 >
-                    <i data-lucide="menu" class="w-5 h-5"></i>
-                    <span class="text-[10px] uppercase tracking-[0.2em] font-sans font-semibold">Menu</span>
+                    <i data-lucide="menu" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                    <span class="text-[9px] sm:text-[10px] uppercase tracking-widest font-sans font-semibold">Menu</span>
                 </button>
             </div>
 
             <!-- Center Framed Brand Box (Sleek Refined Typography Design) -->
-            <div class="flex flex-col items-center justify-center flex-1 lg:flex-initial max-w-[240px] sm:max-w-none px-1">
-                <div class="relative border border-white/35 bg-black/70 backdrop-blur-md px-4 sm:px-7 py-1 text-center flex flex-col items-center rounded-[2px] hover:border-white/70 transition-all duration-300 shadow-xl group w-full sm:w-auto">
+            <div class="flex flex-col items-center justify-center min-w-0 max-w-[210px] sm:max-w-none px-0.5 sm:px-1">
+                <div class="relative border border-white/35 bg-black/70 backdrop-blur-md px-2.5 sm:px-7 py-1 text-center flex flex-col items-center rounded-[2px] hover:border-white/70 transition-all duration-300 shadow-xl group w-full sm:w-auto">
                     <!-- Subtle top corner accent lines -->
                     <span class="absolute -top-0.5 left-2 w-2.5 h-[1px] bg-white/70 hidden sm:block"></span>
                     <span class="absolute -top-0.5 right-2 w-2.5 h-[1px] bg-white/70 hidden sm:block"></span>
                     
                     <a
                         href="{{ route('storefront.home') }}"
-                        class="flex items-center justify-center font-serif text-[11px] sm:text-sm md:text-base tracking-[0.25em] sm:tracking-[0.35em] font-bold uppercase text-white hover:opacity-90 transition-opacity whitespace-nowrap overflow-hidden text-ellipsis py-0.5"
+                        class="flex items-center justify-center font-serif text-[10px] sm:text-sm md:text-base tracking-[0.18em] sm:tracking-[0.35em] font-bold uppercase text-white hover:opacity-90 transition-opacity whitespace-nowrap overflow-hidden text-ellipsis py-0.5 max-w-full"
                     >
                         {{ !empty($settings['web_site_name']) ? strtoupper($settings['web_site_name']) . ' STORE' : 'TRENDHUB STORE' }}
                     </a>
-                    <div class="w-full border-t border-white/20 mt-0.5 pt-0.5 flex items-center justify-center gap-1.5 sm:gap-2 text-[7px] sm:text-[8px] uppercase tracking-[0.15em] sm:tracking-[0.2em] font-sans text-white/80 whitespace-nowrap">
+                    <div class="w-full border-t border-white/20 mt-0.5 pt-0.5 flex items-center justify-center gap-1 sm:gap-2 text-[6.5px] sm:text-[8px] uppercase tracking-wider sm:tracking-[0.2em] font-sans text-white/80 whitespace-nowrap overflow-hidden">
                         <a href="{{ url('/software') }}" class="hover:text-indigo-300 transition-colors duration-200">
-                            LOG IN / REGISTER
+                            LOG IN
                         </a>
                         <span class="text-white/40">•</span>
                         <button @click="isCartOpen = true" class="hover:text-indigo-300 transition-colors duration-200 cursor-pointer">
-                            SHOPPING BAG (<span x-text="cartCount">0</span>)
+                            BAG (<span x-text="cartCount">0</span>)
                         </button>
                     </div>
                 </div>
             </div>
 
             <!-- Right Nav Links (Garments Store Style) -->
-            <div class="hidden lg:flex items-center gap-4 text-[10px] sm:text-xs font-sans font-bold tracking-[0.2em] uppercase border-y border-white/20 py-1.5 px-5">
+            <div class="hidden lg:flex items-center gap-4 text-[10px] sm:text-xs font-sans font-bold tracking-[0.2em] uppercase border-y border-white/20 py-1.5 px-5 shrink-0">
                 <a href="{{ route('storefront.store_locator') }}" class="hover:text-indigo-400 transition-colors duration-200">
                     Store Locator
                 </a>
@@ -187,24 +208,24 @@
             </div>
 
             <!-- Mobile Action Buttons -->
-            <div class="flex lg:hidden items-center gap-2">
+            <div class="flex lg:hidden items-center gap-1 sm:gap-2 shrink-0">
                 <button
                     @click="searchModalOpen = true"
-                    class="p-1.5 hover:opacity-80 cursor-pointer text-white"
+                    class="p-1 sm:p-1.5 hover:opacity-80 cursor-pointer text-white"
                     aria-label="Search"
                 >
                     <i data-lucide="search" class="w-4 h-4"></i>
                 </button>
                 <button
                     @click="isCartOpen = true"
-                    class="p-1.5 hover:opacity-80 relative cursor-pointer text-white"
+                    class="p-1 sm:p-1.5 hover:opacity-80 relative cursor-pointer text-white"
                     aria-label="Cart"
                 >
                     <i data-lucide="shopping-bag" class="w-4 h-4"></i>
                     <span
                         x-show="cartCount > 0"
                         x-text="cartCount"
-                        class="absolute -top-1 -right-1 bg-indigo-600 text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-bold font-mono"
+                        class="absolute -top-1 -right-1 bg-indigo-600 text-white text-[8px] w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center font-bold font-mono"
                     ></span>
                 </button>
             </div>

@@ -36,7 +36,7 @@
     </div>
 
     <!-- Main Hero Content -->
-    <div class="relative z-20 max-w-[1400px] mx-auto w-full px-6 sm:px-12 my-auto py-14 flex flex-col items-start justify-center space-y-6">
+    <div class="relative z-20 max-w-[1400px] mx-auto w-full px-4 sm:px-12 my-auto py-10 sm:py-14 flex flex-col items-start justify-center space-y-5 sm:space-y-6 overflow-hidden">
         <div class="space-y-3 max-w-[700px]">
             <h1 
                 data-aos="fade-up" 
@@ -49,7 +49,7 @@
                 data-aos="fade-up" 
                 data-aos-delay="150" 
                 data-aos-duration="800"
-                class="text-sm sm:text-base md:text-lg font-sans text-gray-200 tracking-wide font-light"
+                class="text-xs sm:text-base md:text-lg font-sans text-gray-200 tracking-wide font-light"
             >
                 {{ $settings['web_hero_subtitle'] ?? "Elevated Men's Apparel — Shirts, Trousers, Polos & Tailored Shorts" }}
             </p>
@@ -59,7 +59,7 @@
             data-aos="fade-right" 
             data-aos-delay="250" 
             data-aos-duration="700"
-            class="text-[10px] sm:text-xs font-sans uppercase tracking-[0.22em] text-gray-300 font-semibold border-l-2 border-indigo-500 pl-3 py-0.5"
+            class="text-[9px] sm:text-xs font-sans uppercase tracking-wider sm:tracking-[0.22em] text-gray-300 font-semibold border-l-2 border-indigo-500 pl-3 py-0.5 max-w-full break-words"
         >
             {{ $settings['web_hero_tagline'] ?? 'FALL / WINTER 2026 COLLECTION • PREMIUM COTTON & LINEN FABRICS' }}
         </div>
@@ -69,17 +69,17 @@
             data-aos="fade-up" 
             data-aos-delay="350" 
             data-aos-duration="800"
-            class="flex flex-wrap gap-3.5 pt-2"
+            class="flex flex-wrap gap-2.5 sm:gap-3.5 pt-2 w-full sm:w-auto"
         >
             <a 
                 href="{{ !empty($settings['web_hero_btn1_link']) ? $settings['web_hero_btn1_link'] : route('storefront.shop') }}" 
-                class="shimmer-btn animate-pulse-glow bg-[#4F46E5] hover:bg-[#4338CA] text-white px-7 sm:px-8 py-3 rounded-full text-[10px] sm:text-xs font-sans uppercase tracking-[0.2em] font-bold transition-all duration-300 hover:scale-105 active:scale-95"
+                class="shimmer-btn animate-pulse-glow bg-[#4F46E5] hover:bg-[#4338CA] text-white px-5 sm:px-8 py-2.5 sm:py-3 rounded-full text-[9px] sm:text-xs font-sans uppercase tracking-wider sm:tracking-[0.2em] font-bold transition-all duration-300 hover:scale-105 active:scale-95 text-center"
             >
                 {{ $settings['web_hero_btn1_text'] ?? 'SHOP COLLECTION' }}
             </a>
             <a 
                 href="{{ !empty($settings['web_hero_btn2_link']) ? $settings['web_hero_btn2_link'] : route('storefront.shop', ['tag' => 'Featured']) }}" 
-                class="border border-white/50 hover:border-white text-white hover:bg-white/15 px-7 sm:px-8 py-3 rounded-full text-[10px] sm:text-xs font-sans uppercase tracking-[0.2em] font-bold transition-all duration-300 hover:scale-105 active:scale-95"
+                class="border border-white/50 hover:border-white text-white hover:bg-white/15 px-5 sm:px-8 py-2.5 sm:py-3 rounded-full text-[9px] sm:text-xs font-sans uppercase tracking-wider sm:tracking-[0.2em] font-bold transition-all duration-300 hover:scale-105 active:scale-95 text-center"
             >
                 {{ $settings['web_hero_btn2_text'] ?? 'EXPLORE MENSWEAR' }}
             </a>
@@ -87,7 +87,7 @@
     </div>
 
     <!-- Hero Bottom Dock / 4 Featured Cards (Frosted Glassmorphic Overlay) -->
-    <div class="relative z-20 w-full border-t border-white/20 bg-black/60 backdrop-blur-md">
+    <div class="relative z-20 w-full border-t border-white/20 bg-black/60 backdrop-blur-md overflow-hidden">
         <div class="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/15">
             
             <!-- Card 1 -->
@@ -95,7 +95,7 @@
                 data-aos="fade-up" 
                 data-aos-delay="100"
                 href="{{ !empty($settings['web_card1_link']) ? $settings['web_card1_link'] : (isset($allProducts[0]) ? route('storefront.product', $allProducts[0]->id) : route('storefront.shop')) }}"
-                class="p-6 flex flex-col justify-between space-y-3 relative group hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 block cursor-pointer"
+                class="p-4 sm:p-6 flex flex-col justify-between space-y-3 relative group hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 block cursor-pointer"
             >
                 <div class="w-14 h-0.5 bg-white mb-1 transition-all duration-300 group-hover:w-20 group-hover:bg-indigo-400"></div>
                 <div>
@@ -122,7 +122,7 @@
                 data-aos="fade-up" 
                 data-aos-delay="200"
                 href="{{ !empty($settings['web_card2_link']) ? $settings['web_card2_link'] : (isset($allProducts[1]) ? route('storefront.product', $allProducts[1]->id) : route('storefront.shop')) }}"
-                class="p-6 flex flex-col justify-between space-y-3 relative group hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 block cursor-pointer"
+                class="p-4 sm:p-6 flex flex-col justify-between space-y-3 relative group hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 block cursor-pointer"
             >
                 <div>
                     <span class="bg-red-600 text-white text-[9px] font-sans font-bold px-2.5 py-0.5 rounded uppercase tracking-wider inline-flex items-center gap-1.5 mb-2 shadow-sm">
@@ -149,7 +149,7 @@
                 data-aos="fade-up" 
                 data-aos-delay="300"
                 href="{{ !empty($settings['web_card3_link']) ? $settings['web_card3_link'] : (isset($allProducts[2]) ? route('storefront.product', $allProducts[2]->id) : route('storefront.shop')) }}"
-                class="p-6 flex flex-col justify-between space-y-3 relative group hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 block cursor-pointer"
+                class="p-4 sm:p-6 flex flex-col justify-between space-y-3 relative group hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 block cursor-pointer"
             >
                 <div>
                     <span class="bg-[#9333EA] text-white text-[9px] font-sans font-bold px-2.5 py-0.5 rounded uppercase tracking-wider inline-block mb-2 shadow-sm">
@@ -175,7 +175,7 @@
                 data-aos="fade-up" 
                 data-aos-delay="400"
                 href="{{ !empty($settings['web_card4_link']) ? $settings['web_card4_link'] : (isset($allProducts[3]) ? route('storefront.product', $allProducts[3]->id) : route('storefront.shop')) }}"
-                class="p-6 flex flex-col justify-between space-y-3 relative group hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 block cursor-pointer"
+                class="p-4 sm:p-6 flex flex-col justify-between space-y-3 relative group hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 block cursor-pointer"
             >
                 <div>
                     <span class="bg-emerald-600 text-white text-[9px] font-sans font-bold px-2.5 py-0.5 rounded uppercase tracking-wider inline-block mb-2 shadow-sm">
