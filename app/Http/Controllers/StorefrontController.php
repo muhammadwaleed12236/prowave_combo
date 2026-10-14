@@ -320,19 +320,19 @@ class StorefrontController extends Controller
 
             $order = new EcommerceOrder();
             $order->order_number = $orderNumber;
-            $order->total_amount = $finalTotal;
+            $order->total = $finalTotal;
             $order->subtotal = $subtotal;
-            $order->shipping_cost = $shippingCost;
+            $order->delivery_charges = $shippingCost;
+            $order->discount = $discountAmount;
             $order->discount_amount = $discountAmount;
-            $order->status = 'pending';
+            $order->order_status = 'pending';
             $order->payment_status = 'pending';
             $order->payment_method = $request->payment_method;
             $order->shipping_name = $request->shipping_name;
             $order->shipping_phone = $request->shipping_phone;
             $order->shipping_address = $request->shipping_address;
             $order->shipping_city = $request->shipping_city;
-            $order->shipping_email = $request->shipping_email ?? null;
-            $order->notes = $request->order_notes ?? null;
+            $order->order_notes = $request->order_notes ?? null;
             $order->transaction_id = $request->transaction_id ?? null;
 
             // Handle payment screenshot upload if Easypaisa
@@ -352,7 +352,7 @@ class StorefrontController extends Controller
                 $itemModel->product_name = $oi['product_name'];
                 $itemModel->price = $oi['price'];
                 $itemModel->quantity = $oi['quantity'];
-                $itemModel->subtotal = $oi['subtotal'];
+                $itemModel->total = $oi['subtotal'];
                 $itemModel->size = $oi['size'];
                 $itemModel->color = $oi['color'];
                 $itemModel->save();

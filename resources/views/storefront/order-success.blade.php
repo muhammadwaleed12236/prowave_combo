@@ -36,7 +36,7 @@
             </div>
             <div class="flex justify-between items-center pt-2 border-t border-gray-100 text-sm font-bold">
                 <span>Total Amount:</span>
-                <span class="font-mono text-black">PKR {{ number_format($order->total_amount) }}</span>
+                <span class="font-mono text-black">PKR {{ number_format($order->total) }}</span>
             </div>
         </div>
 
@@ -53,7 +53,7 @@
                 $rawPh = $settings['web_whatsapp_number'] ?? '3173340926';
                 $cleanPh = preg_replace('/[^0-9]/', '', $rawPh);
                 if (!str_starts_with($cleanPh, '92')) $cleanPh = '92' . ltrim($cleanPh, '0');
-                $waText = "Assalam-o-Alaikum, I just placed order #{$order->order_number} for PKR " . number_format($order->total_amount) . ". Kindly confirm dispatch.";
+                $waText = "Assalam-o-Alaikum, I just placed order #{$order->order_number} for PKR " . number_format($order->total) . ". Kindly confirm dispatch.";
             @endphp
             <a 
                 href="https://wa.me/{{ $cleanPh }}?text={{ urlencode($waText) }}" 
