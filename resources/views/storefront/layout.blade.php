@@ -34,6 +34,10 @@
     <!-- Alpine.js (Reactive Storefront: Cart Drawer, Quick View Modal, Wishlist) -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -52,6 +56,43 @@
         }
         .animate-infinite-scroll:hover {
             animation-play-state: paused;
+        }
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(79, 70, 229, 0.45);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 35px rgba(79, 70, 229, 0.8);
+                transform: scale(1.02);
+            }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+        .shimmer-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        .shimmer-btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 3.5s infinite;
+        }
+        @keyframes heroZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+        .animate-hero-zoom {
+            animation: heroZoom 25s infinite alternate ease-in-out;
         }
     </style>
 
@@ -311,9 +352,17 @@
                         this.wishlist = [];
                     }
 
-                    // Re-render icons on mount
+                    // Re-render icons and AOS animations on mount
                     this.$nextTick(() => {
                         if (window.lucide) window.lucide.createIcons();
+                        if (window.AOS) {
+                            window.AOS.init({
+                                once: true,
+                                duration: 700,
+                                easing: 'ease-out-cubic',
+                                offset: 40
+                            });
+                        }
                     });
                 },
 
