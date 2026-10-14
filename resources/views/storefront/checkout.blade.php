@@ -3,18 +3,21 @@
 @section('title', 'Secure Checkout | ' . ($settings['web_site_name'] ?? 'TrendHub'))
 
 @section('content')
-<div class="bg-[#fafafa] min-h-screen py-10 sm:py-16 font-sans" x-data="{
-    paymentMethod: 'COD',
-    cartJson: '',
-    prepareSubmit() {
-        if (this.cart.length === 0) {
-            alert('Your cart is empty. Please add items before checking out.');
-            return false;
-        }
-        this.cartJson = JSON.stringify(this.cart);
-        return true;
-    }
-}">
+<div 
+    class="bg-[#fafafa] min-h-screen py-10 sm:py-16 font-sans" 
+    x-data="{
+        paymentMethod: '{{ old('payment_method', 'COD') }}'
+    }"
+    x-init="
+        $nextTick(() => {
+            const raw = localStorage.getItem('th_cart');
+            const el = document.getElementById('cart_data_input');
+            if (raw && el) {
+                el.value = raw;
+            }
+        });
+    "
+>
     <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Header -->
@@ -29,6 +32,9 @@
 
         @if(isset($errors) && $errors->any())
             <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl">
+                <div class="font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <i data-lucide="alert-circle" class="w-4 h-4 text-red-600"></i> Attention:
+                </div>
                 <ul class="list-disc pl-5 space-y-1">
                     @foreach($errors->all() as $err)
                         <li>{{ $err }}</li>
@@ -42,8 +48,8 @@
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center max-w-lg mx-auto space-y-4">
                 <i data-lucide="shopping-bag" class="w-12 h-12 text-gray-300 mx-auto"></i>
                 <h3 class="text-base font-bold uppercase tracking-wider text-black">Your bag is currently empty</h3>
-                <p class="text-xs text-gray-400">You must add at least one piece to your bag before proceeding to checkout.</p>
-                <a href="{{ route('storefront.shop') }}" class="inline-block bg-black text-white text-xs font-bold uppercase tracking-widest px-8 py-3 rounded-full hover:bg-neutral-800">
+                <p class="text-xs text-gray-400">You must add at least one item to your bag before proceeding to checkout.</p>
+                <a href="{{ route('storefront.shop') }}" class="inline-block bg-black text-white text-xs font-bold uppercase tracking-widest px-8 py-3 rounded-full hover:bg-neutral-800 transition-all">
                     Explore Collections
                 </a>
             </div>
@@ -55,11 +61,27 @@
                 action="{{ route('storefront.place_order') }}" 
                 method="POST" 
                 enctype="multipart/form-data"
-                @submit="return prepareSubmit()"
+                id="checkoutForm"
+                @submit="
+                    const rawData = localStorage.getItem('th_cart') || JSON.stringify(cart || []);
+                    let parsedItems = [];
+                    try { parsedItems = JSON.parse(rawData); } catch(e) {}
+                    if (!parsedItems || parsedItems.length === 0) {
+                        alert('Your bag is currently empty. Please add items to your cart first.');
+                        $event.preventDefault();
+                        return false;
+                    }
+                    document.getElementById('cart_data_input').value = rawData;
+                "
                 class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12"
             >
                 @csrf
-                <input type="hidden" name="cart_data" :value="cartJson">
+                <input 
+                    type="hidden" 
+                    id="cart_data_input" 
+                    name="cart_data" 
+                    :value="JSON.stringify(cart)"
+                >
 
                 <!-- Left Column: Shipping & Payment (7 cols) -->
                 <div class="lg:col-span-7 space-y-8">

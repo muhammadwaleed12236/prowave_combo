@@ -259,18 +259,32 @@ class StorefrontController extends Controller
      */
     public function placeOrder(Request $request)
     {
+        $messages = [
+            'shipping_name.required' => 'Please enter your Full Name.',
+            'shipping_phone.required' => 'Please enter your Mobile / WhatsApp Number.',
+            'shipping_address.required' => 'Please enter your complete Delivery Address.',
+            'shipping_city.required' => 'Please enter your City.',
+            'payment_method.required' => 'Please select a Payment Method.',
+            'cart_data.required' => 'Your shopping bag is empty. Please add items to your cart before proceeding to checkout.',
+        ];
+
         $request->validate([
             'shipping_name' => 'required|string|max:255',
             'shipping_phone' => 'required|string|max:20',
             'shipping_address' => 'required|string|max:500',
             'shipping_city' => 'required|string|max:100',
             'payment_method' => 'required|string|in:COD,Easypaisa,Bank Transfer',
-            'cart_data' => 'required|string', // JSON string from client
-        ]);
+            'cart_data' => 'required',
+        ], $messages);
 
-        $cartItems = json_decode($request->cart_data, true);
+        $cartItems = is_array($request->cart_data) 
+            ? $request->cart_data 
+            : json_decode($request->cart_data, true);
+
         if (!is_array($cartItems) || count($cartItems) === 0) {
-            return back()->withErrors(['cart' => 'Your cart is empty.']);
+            return back()->withInput()->withErrors([
+                'cart_data' => 'Your shopping bag is empty. Please add items to your cart before proceeding to checkout.'
+            ]);
         }
 
         DB::beginTransaction();
