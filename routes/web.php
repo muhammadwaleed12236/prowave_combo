@@ -45,31 +45,17 @@ use Illuminate\Support\Facades\Route;
     |
     */
 
-// 1. Direct Domain / Root: Redirects to Next.js Storefront Website (Prevents self-redirect loops)
-Route::get('/', function () {
-    $frontendUrl = env('FRONTEND_URL');
-
-    // Only redirect if FRONTEND_URL is set and points to an external port/host (e.g. localhost:3000 or Vercel)
-    if (!empty($frontendUrl)) {
-        $parsedHost = parse_url($frontendUrl, PHP_URL_HOST);
-        $parsedPort = parse_url($frontendUrl, PHP_URL_PORT);
-        $currentHost = request()->getHost();
-        $currentPort = request()->getPort();
-
-        // Check if destination is different from current request
-        if (($parsedHost && $parsedHost !== $currentHost) || ($parsedPort && $parsedPort != $currentPort)) {
-            return redirect()->away($frontendUrl);
-        }
-    }
-
-    // If static Next.js build exists in public folder, serve it
-    if (file_exists(public_path('index.html'))) {
-        return response()->file(public_path('index.html'));
-    }
-
-    // Fallback: If on same domain without separate Node app, open software
-    return redirect('/software');
-})->name('website');
+// =========================================================================
+// PURE LARAVEL STOREFRONT ROUTES (Instant server rendering, zero build)
+// =========================================================================
+Route::get('/', [\App\Http\Controllers\StorefrontController::class, 'index'])->name('storefront.home');
+Route::get('/shop', [\App\Http\Controllers\StorefrontController::class, 'shop'])->name('storefront.shop');
+Route::get('/product/{id}', [\App\Http\Controllers\StorefrontController::class, 'product'])->name('storefront.product');
+Route::get('/checkout', [\App\Http\Controllers\StorefrontController::class, 'checkout'])->name('storefront.checkout');
+Route::post('/place-order', [\App\Http\Controllers\StorefrontController::class, 'placeOrder'])->name('storefront.place_order');
+Route::get('/order-confirmed/{orderNumber}', [\App\Http\Controllers\StorefrontController::class, 'orderSuccess'])->name('storefront.order_success');
+Route::get('/wishlist', [\App\Http\Controllers\StorefrontController::class, 'wishlist'])->name('storefront.wishlist');
+Route::get('/store-locator', [\App\Http\Controllers\StorefrontController::class, 'storeLocator'])->name('storefront.store_locator');
 
 // 2. /software: Software Login Page (or Dashboard if already logged in)
 Route::get('/software', function () {
