@@ -230,48 +230,6 @@
                 </button>
             </div>
         </div>
-
-        <!-- Mobile Drawer Navigation -->
-        <div 
-            x-show="mobileMenuOpen" 
-            x-cloak
-            x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="-translate-x-full"
-            x-transition:enter-end="translate-x-0"
-            x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="translate-x-0"
-            x-transition:leave-end="-translate-x-full"
-            class="fixed inset-0 z-50 lg:hidden flex"
-        >
-            <div class="fixed inset-0 bg-black/60 backdrop-blur-xs" @click="mobileMenuOpen = false"></div>
-            <div class="relative bg-white w-4/5 max-w-sm h-full p-6 flex flex-col justify-between shadow-2xl z-10 overflow-y-auto">
-                <div class="space-y-6">
-                    <div class="flex items-center justify-between border-b border-gray-100 pb-4">
-                        <span class="font-serif font-bold text-lg uppercase tracking-widest text-black">
-                            {{ $settings['web_site_name'] ?? 'TREND HUB' }}
-                        </span>
-                        <button @click="mobileMenuOpen = false" class="p-1.5 text-gray-400 hover:text-black">
-                            <i data-lucide="x" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-
-                    <nav class="flex flex-col space-y-4 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-800">
-                        <a href="{{ route('storefront.home') }}" class="py-2 border-b border-gray-50 hover:text-black">Home</a>
-                        <a href="{{ route('storefront.shop') }}" class="py-2 border-b border-gray-50 hover:text-black">All Collections</a>
-                        <a href="{{ route('storefront.shop', ['tag' => 'New Arrival']) }}" class="py-2 border-b border-gray-50 hover:text-black">New Arrivals</a>
-                        <a href="{{ route('storefront.shop', ['tag' => 'Best Seller']) }}" class="py-2 border-b border-gray-50 hover:text-black">Best Sellers</a>
-                        <a href="{{ route('storefront.store_locator') }}" class="py-2 border-b border-gray-50 hover:text-black">Store Locator</a>
-                        <a href="{{ route('storefront.wishlist') }}" class="py-2 border-b border-gray-50 hover:text-black">Wishlist (<span x-text="wishlist.length"></span>)</a>
-                    </nav>
-                </div>
-
-                <div class="border-t border-gray-100 pt-6 space-y-3 text-[11px] text-gray-500">
-                    <p class="font-medium text-black">Customer Support</p>
-                    <p>WhatsApp: +92 {{ ltrim($settings['web_whatsapp_number'] ?? '3173340926', '0') }}</p>
-                    <p>Email: {{ $settings['web_contact_email'] ?? 'trendhubstorepk1@gmail.com' }}</p>
-                </div>
-            </div>
-        </div>
     </header>
 
     <!-- Main Content Area -->
@@ -281,6 +239,9 @@
 
     <!-- Footer -->
     @include('storefront.partials.footer')
+
+    <!-- Mobile Drawer Navigation -->
+    @include('storefront.partials.mobile-menu')
 
     <!-- Side Cart Drawer -->
     @include('storefront.partials.cart-drawer')
