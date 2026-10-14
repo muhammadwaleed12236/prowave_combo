@@ -14,102 +14,113 @@
         'total_stock' => $product->total_stock,
     ]);
 
-    // Deterministic review count & rating based on product id
-    $rating = 4.7 + (($product->id % 3) * 0.1);
-    $reviewCount = 85 + (($product->id * 17) % 150);
+    // Fabric/texture tag
+    $nameLower = strtolower($product->item_name);
+    $fabricTag = 'Texture';
+    if (str_contains($nameLower, 'polo')) $fabricTag = 'Micro Zig Zag';
+    elseif (str_contains($nameLower, 'shirt')) $fabricTag = 'Seer Sucker Lycra';
+    elseif (str_contains($nameLower, 'jacket')) $fabricTag = 'Drop Needle Jersey';
+    elseif (str_contains($nameLower, 'trouser')) $fabricTag = 'Stretch Fit';
+    elseif (str_contains($nameLower, 'cargo')) $fabricTag = 'Neoprene';
 @endphp
 
-<div class="group w-full flex flex-col bg-white rounded-md border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all duration-300 p-2 sm:p-2.5 select-none">
+<div class="group w-full flex flex-col relative overflow-hidden bg-white select-none transition-all duration-500 hover:-translate-y-1 hover:shadow-xl rounded-[2px] border border-transparent hover:border-gray-100">
     <!-- Image & Badges Container -->
-    <div class="relative aspect-[3/4] overflow-hidden rounded bg-gray-50 block">
+    <div class="relative aspect-[3/4] overflow-hidden bg-gray-50 block">
         
-        <!-- Sale Discount Badge -->
+        <!-- Quarter Circle Sale Tag -->
         @if($product->discount_percent > 0)
-            <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-[9px] font-sans font-bold px-1.5 py-0.5 rounded shadow-xs">
-                -{{ $product->discount_percent }}%
+            <div class="absolute top-0 left-0 w-9 h-9 bg-[#7a0f12] text-white rounded-br-full z-10 pointer-events-none shadow-sm">
+                <span class="absolute top-[11px] left-[5px] text-[9px] font-sans font-bold tracking-tighter leading-none block">
+                    -{{ $product->discount_percent }}%
+                </span>
             </div>
         @endif
 
         <!-- Wishlist Button (Top Right) -->
         <button 
             @click.stop="toggleWishlist({{ $product->id }})" 
-            class="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-neutral-700 flex items-center justify-center transition-all shadow-xs cursor-pointer hover:scale-110"
+            class="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-neutral-800 flex items-center justify-center transition-all shadow-sm cursor-pointer hover:scale-110"
             aria-label="Wishlist"
         >
             <i 
                 data-lucide="heart" 
                 class="w-3.5 h-3.5 transition-colors"
-                :class="isInWishlist({{ $product->id }}) ? 'fill-red-600 text-red-600' : 'text-neutral-600'"
+                :class="isInWishlist({{ $product->id }}) ? 'fill-red-600 text-red-600' : 'text-neutral-700'"
             ></i>
         </button>
+
+        <!-- Out of Stock Badge -->
+        @if($product->total_stock !== null && $product->total_stock <= 0)
+            <div class="absolute top-2.5 left-2.5 z-10 pointer-events-none">
+                <span class="bg-[#222222]/95 backdrop-blur-[1px] text-white text-[9px] uppercase tracking-wider px-2 py-1 font-sans font-bold shadow-sm">
+                    Out of Stock
+                </span>
+            </div>
+        @endif
 
         <!-- Product Image Link -->
         <a href="{{ route('storefront.product', $product->id) }}" class="w-full h-full block">
             <img 
-                src="{{ asset($product->display_image) }}" 
+                src="{{ $product->display_image }}" 
                 alt="{{ $product->item_name }}" 
                 loading="lazy"
-                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
-                x-on:error="$event.target.src = '/placeholders/outfitter_prod_1.jpg'"
+                class="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105 {{ $product->total_stock !== null && $product->total_stock <= 0 ? 'opacity-60 grayscale-[40%]' : '' }}"
+                onerror="this.src='/placeholders/outfitter_prod_1.jpg'"
             >
         </a>
 
-        <!-- Quick View Eye Button (Hover) -->
-        <button 
-            @click.prevent.stop="openQuickView({{ $productJson }})"
-            class="absolute bottom-2 right-2 z-10 w-7 h-7 rounded-full bg-white/90 hover:bg-black hover:text-white text-neutral-800 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-xs cursor-pointer"
-            aria-label="Quick View"
-            title="Quick View"
-        >
-            <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-        </button>
+        <!-- Hover Actions Bar (Add to Cart & Quick View Eye) -->
+        <div class="absolute bottom-3 left-3 right-3 z-10 flex bg-white shadow-md border border-neutral-100 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out">
+            @if($product->total_stock !== null && $product->total_stock <= 0)
+                <div class="flex-1 bg-neutral-50 text-neutral-400 text-[10px] sm:text-xs font-sans font-bold tracking-wider uppercase flex items-center justify-center py-1.5 px-2 select-none">
+                    Out of Stock
+                </div>
+            @else
+                <button 
+                    @click.prevent.stop="addToCart({{ $productJson }}, 1, '{{ $product->parsed_sizes[0] ?? '' }}', '{{ $product->parsed_colors[0] ?? '' }}')"
+                    class="flex-1 bg-white hover:bg-neutral-900 hover:text-white text-neutral-900 text-[10px] sm:text-xs font-sans font-bold tracking-wider uppercase transition-colors duration-300 py-1.5 px-2 flex items-center justify-center cursor-pointer"
+                >
+                    Add to Cart
+                </button>
+            @endif
+
+            <div class="w-[1px] bg-neutral-200"></div>
+
+            <button 
+                @click.prevent.stop="openQuickView({{ $productJson }})"
+                class="w-9 hover:bg-neutral-900 hover:text-white text-neutral-900 flex items-center justify-center transition-colors duration-300 cursor-pointer"
+                aria-label="Quick View"
+            >
+                <i data-lucide="eye" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <!-- Fabric Tag (Bottom Left Overlay) -->
+        <div class="absolute bottom-0 left-0 bg-[#dcdcdc]/70 text-neutral-800 text-[10px] font-sans font-medium py-1 px-3.5 tracking-wide select-none pointer-events-none transition-opacity duration-300 group-hover:opacity-0">
+            {{ $fabricTag }}
+        </div>
     </div>
 
-    <!-- Product Text Details (Reference Match) -->
-    <div class="pt-2.5 pb-1 flex-1 flex flex-col justify-between space-y-1.5">
-        <div>
-            <a 
-                href="{{ route('storefront.product', $product->id) }}" 
-                class="text-xs sm:text-[13px] font-sans font-medium text-neutral-900 hover:text-[#b89758] transition-colors line-clamp-1 block"
-                title="{{ $product->item_name }}"
-            >
-                {{ $product->item_name }}
-            </a>
-            <span class="text-[10px] text-gray-400 font-sans block">
-                {{ $product->category_relation ? $product->category_relation->name : 'Men\'s Fashion' }}
-            </span>
-        </div>
+    <!-- Product Text Details -->
+    <div class="pt-4 pb-2 text-center space-y-1.5 px-2">
+        <a 
+            href="{{ route('storefront.product', $product->id) }}" 
+            class="text-xs sm:text-[13px] font-sans uppercase font-semibold text-neutral-800 hover:text-black transition-colors tracking-wide min-h-[32px] sm:min-h-[40px] flex items-center justify-center line-clamp-2"
+        >
+            {{ $product->item_name }}
+        </a>
 
-        <!-- Star Reviews -->
-        <div class="flex items-center gap-1 text-[10px] text-gray-500 font-sans">
-            <div class="flex text-[#b89758]">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-            </div>
-            <span class="font-bold text-neutral-700">{{ number_format($rating, 1) }}</span>
-            <span class="text-gray-400">({{ $reviewCount }})</span>
-        </div>
-
-        <!-- Price -->
-        <div class="flex items-baseline gap-2 pt-0.5">
-            <span class="text-sm font-bold text-neutral-900 font-sans">
-                Rs. {{ number_format(round($product->final_price)) }}
-            </span>
+        <!-- Pricing -->
+        <div class="flex justify-center items-baseline gap-2 text-[10px] sm:text-xs font-sans">
             @if($product->discount_percent > 0)
-                <span class="text-[11px] text-gray-400 line-through font-light font-sans">
-                    Rs. {{ number_format(round($product->sale_price_per_piece ?: 0)) }}
+                <span class="text-gray-400 line-through font-light">
+                    PKR {{ number_format(round($product->sale_price_per_piece ?: 0)) }}
                 </span>
             @endif
-        </div>
-
-        <!-- Add to Cart Full-Width Solid Black Button (Reference Match) -->
-        <div class="pt-1.5">
-            <button 
-                @click.prevent.stop="addToCart({{ $productJson }}, 1, '{{ $product->parsed_sizes[0] ?? '' }}', '{{ $product->parsed_colors[0] ?? '' }}')"
-                class="w-full bg-neutral-950 hover:bg-[#b89758] text-white text-[11px] font-sans font-bold py-2 px-3 rounded flex items-center justify-center gap-1.5 transition-colors duration-200 cursor-pointer shadow-xs active:scale-95"
-            >
-                <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
-                <span>Add to Cart</span>
-            </button>
+            <span class="text-black font-bold">
+                PKR {{ number_format(round($product->final_price)) }}
+            </span>
         </div>
     </div>
 </div>

@@ -1,457 +1,573 @@
 @extends('storefront.layout')
 
-@section('title', ($settings['web_site_name'] ?? 'TrendHub') . " | Elevate Your Style — Men's Wear")
+@section('title', ($settings['web_site_name'] ?? 'TrendHub') . ' | Modern Luxury Menswear')
 
 @section('content')
 
-<!-- 1. HERO BANNER (REFERENCE MATCH: EDITORIAL LUXURY MENSWEAR) -->
-<section class="relative w-full bg-[#0a0a0a] overflow-hidden min-h-[520px] lg:min-h-[580px] flex items-center">
-    <!-- Background Image / Video with Split Overlay -->
-    <div class="absolute inset-0 z-0">
-        @php
-            $heroImg = !empty($settings['web_home_hero_image']) ? asset($settings['web_home_hero_image']) : asset('placeholders/outfitter_prod_5.jpg');
-        @endphp
-        <img 
-            src="{{ $heroImg }}" 
-            alt="Hero Menswear Model" 
-            class="w-full h-full object-cover object-right md:object-center brightness-[0.7] contrast-[1.05]"
-            x-on:error="$event.target.src = '/placeholders/outfitter_prod_5.jpg'"
-        >
-        <!-- Luxury Left Gradient -->
-        <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 md:via-black/60 to-transparent z-10"></div>
+<!-- 1. HERO SECTION (DARK LUXURY OVERLAY + 4 BOTTOM DOCK CARDS) -->
+<section class="relative w-full min-h-[92vh] flex flex-col justify-between overflow-hidden bg-neutral-950">
+    <!-- Background Video / Image Layer with Premium Luxury Overlays -->
+    <div class="absolute inset-0 z-0 overflow-hidden">
+        @if(!empty($settings['web_home_hero_video']))
+            <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                class="w-full h-full object-cover filter brightness-[0.55] contrast-[1.1]"
+            >
+                <source src="{{ asset($settings['web_home_hero_video']) }}" type="video/mp4">
+            </video>
+        @else
+            @php
+                $heroImg = !empty($settings['web_home_hero_image']) ? asset($settings['web_home_hero_image']) : asset('placeholders/outfitter_prod_5.jpg');
+            @endphp
+            <img 
+                src="{{ $heroImg }}" 
+                alt="Hero Fashion" 
+                class="w-full h-full object-cover filter brightness-[0.6] contrast-[1.08] animate-hero-zoom"
+                x-on:error="$event.target.src = '/placeholders/outfitter_prod_5.jpg'"
+            >
+        @endif
+        <!-- Dark Vignette & Gradient Overlays -->
+        <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent z-10 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-black/65 z-10 pointer-events-none"></div>
     </div>
 
-    <!-- Hero Content Container -->
-    <div class="relative z-20 max-w-[1400px] mx-auto w-full px-6 sm:px-10 lg:px-12 py-16 flex flex-col md:flex-row items-center justify-between gap-10">
-        
-        <!-- Left Editorial Text -->
-        <div class="max-w-[620px] space-y-5 text-left">
-            <span 
-                data-aos="fade-right"
-                class="text-[11px] sm:text-xs font-sans font-bold uppercase tracking-[0.25em] text-[#c5a880] block"
-            >
-                PREMIUM MEN'S COLLECTION
-            </span>
-
+    <!-- Main Hero Content -->
+    <div class="relative z-20 max-w-[1400px] mx-auto w-full px-6 sm:px-12 my-auto py-14 flex flex-col items-start justify-center space-y-6">
+        <div class="space-y-3 max-w-[700px]">
             <h1 
                 data-aos="fade-up" 
-                data-aos-duration="700"
-                class="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal tracking-tight text-white leading-tight uppercase"
+                data-aos-duration="800"
+                class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-sans font-bold tracking-tight text-white leading-tight uppercase"
             >
-                ELEVATE<br>
-                <span class="text-[#c5a880] font-light">YOUR STYLE</span>
+                {{ $settings['web_hero_title'] ?? (($settings['web_site_name'] ?? 'TrendHub') . ' Menswear') }}
             </h1>
-
             <p 
                 data-aos="fade-up" 
-                data-aos-delay="150"
-                class="text-xs sm:text-sm md:text-base text-gray-300 font-sans font-light leading-relaxed max-w-[500px]"
+                data-aos-delay="150" 
+                data-aos-duration="800"
+                class="text-sm sm:text-base md:text-lg font-sans text-gray-200 tracking-wide font-light"
             >
-                Discover modern fits, premium fabrics and timeless menswear for every occasion.
+                {{ $settings['web_hero_subtitle'] ?? "Elevated Men's Apparel — Shirts, Trousers, Polos & Tailored Shorts" }}
             </p>
+        </div>
 
-            <div data-aos="fade-up" data-aos-delay="250" class="pt-2">
-                <a 
-                    href="{{ route('storefront.shop') }}" 
-                    class="inline-flex items-center gap-2 bg-[#b89758] hover:bg-[#a6864a] text-black font-sans font-bold text-xs uppercase tracking-widest px-8 py-3.5 rounded-[2px] transition-all duration-300 shadow-md hover:scale-105 active:scale-95"
+        <div 
+            data-aos="fade-right" 
+            data-aos-delay="250" 
+            data-aos-duration="700"
+            class="text-[10px] sm:text-xs font-sans uppercase tracking-[0.22em] text-gray-300 font-semibold border-l-2 border-indigo-500 pl-3 py-0.5"
+        >
+            {{ $settings['web_hero_tagline'] ?? 'FALL / WINTER 2026 COLLECTION • PREMIUM COTTON & LINEN FABRICS' }}
+        </div>
+
+        <!-- Action Buttons -->
+        <div 
+            data-aos="fade-up" 
+            data-aos-delay="350" 
+            data-aos-duration="800"
+            class="flex flex-wrap gap-3.5 pt-2"
+        >
+            <a 
+                href="{{ !empty($settings['web_hero_btn1_link']) ? $settings['web_hero_btn1_link'] : route('storefront.shop') }}" 
+                class="shimmer-btn animate-pulse-glow bg-[#4F46E5] hover:bg-[#4338CA] text-white px-7 sm:px-8 py-3 rounded-full text-[10px] sm:text-xs font-sans uppercase tracking-[0.2em] font-bold transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+                {{ $settings['web_hero_btn1_text'] ?? 'SHOP COLLECTION' }}
+            </a>
+            <a 
+                href="{{ !empty($settings['web_hero_btn2_link']) ? $settings['web_hero_btn2_link'] : route('storefront.shop', ['tag' => 'Featured']) }}" 
+                class="border border-white/50 hover:border-white text-white hover:bg-white/15 px-7 sm:px-8 py-3 rounded-full text-[10px] sm:text-xs font-sans uppercase tracking-[0.2em] font-bold transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+                {{ $settings['web_hero_btn2_text'] ?? 'EXPLORE MENSWEAR' }}
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero Bottom Dock / 4 Featured Cards (Frosted Glassmorphic Overlay) -->
+    <div class="relative z-20 w-full border-t border-white/20 bg-black/60 backdrop-blur-md">
+        <div class="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/15">
+            
+            <!-- Card 1 -->
+            <a 
+                data-aos="fade-up" 
+                data-aos-delay="100"
+                href="{{ !empty($settings['web_card1_link']) ? $settings['web_card1_link'] : (isset($allProducts[0]) ? route('storefront.product', $allProducts[0]->id) : route('storefront.shop')) }}"
+                class="p-6 flex flex-col justify-between space-y-3 relative group hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 block cursor-pointer"
+            >
+                <div class="w-14 h-0.5 bg-white mb-1 transition-all duration-300 group-hover:w-20 group-hover:bg-indigo-400"></div>
+                <div>
+                    <span class="bg-[#4F46E5] text-white text-[9px] font-sans font-bold px-2.5 py-0.5 rounded uppercase tracking-wider inline-block mb-2 shadow-sm">
+                        {{ $settings['web_card1_badge'] ?? 'FORMAL SHIRTS' }}
+                    </span>
+                    <h4 class="text-sm font-sans font-bold text-white tracking-wide group-hover:text-indigo-400 transition-colors">
+                        {{ $settings['web_card1_title'] ?? ($allProducts[0]->item_name ?? 'Formal & Oxford Shirts') }}
+                    </h4>
+                    <p class="text-xs text-gray-400 font-sans line-clamp-1 mt-0.5">
+                        {{ $settings['web_card1_subtext'] ?? '100% Egyptian Cotton • Slim & Tailored Fits' }}
+                    </p>
+                </div>
+                <div class="text-[10px] text-gray-400 font-sans tracking-wider uppercase pt-2 border-t border-white/10 flex justify-between items-center">
+                    <span>{{ $settings['web_card1_detail'] ?? 'PREMIUM COTTON' }}</span>
+                    <span class="text-indigo-300 font-bold group-hover:translate-x-1 transition-transform">
+                        {{ isset($allProducts[0]) ? 'RS. ' . number_format($allProducts[0]->final_price) : 'SHOP NOW' }} &rarr;
+                    </span>
+                </div>
+            </a>
+
+            <!-- Card 2 -->
+            <a 
+                data-aos="fade-up" 
+                data-aos-delay="200"
+                href="{{ !empty($settings['web_card2_link']) ? $settings['web_card2_link'] : (isset($allProducts[1]) ? route('storefront.product', $allProducts[1]->id) : route('storefront.shop')) }}"
+                class="p-6 flex flex-col justify-between space-y-3 relative group hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 block cursor-pointer"
+            >
+                <div>
+                    <span class="bg-red-600 text-white text-[9px] font-sans font-bold px-2.5 py-0.5 rounded uppercase tracking-wider inline-flex items-center gap-1.5 mb-2 shadow-sm">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+                        {{ $settings['web_card2_badge'] ?? 'FLASH SALE' }}
+                    </span>
+                    <h4 class="text-sm font-sans font-bold text-white tracking-wide group-hover:text-indigo-400 transition-colors">
+                        {{ $settings['web_card2_title'] ?? ($allProducts[1]->item_name ?? 'Chino Trousers & Pants') }}
+                    </h4>
+                    <p class="text-xs text-gray-400 font-sans line-clamp-1 mt-0.5">
+                        {{ $settings['web_card2_subtext'] ?? 'Flexible Stretch Cotton • Modern Slim Cut' }}
+                    </p>
+                </div>
+                <div class="text-[10px] text-red-400 font-sans tracking-wider font-bold uppercase pt-2 border-t border-white/10 flex justify-between items-center">
+                    <span>{{ $settings['web_card2_detail'] ?? 'UP TO 30% OFF' }}</span>
+                    <span class="text-white font-bold group-hover:translate-x-1 transition-transform">
+                        {{ isset($allProducts[1]) ? 'RS. ' . number_format($allProducts[1]->final_price) : 'EXPLORE' }} &rarr;
+                    </span>
+                </div>
+            </a>
+
+            <!-- Card 3 -->
+            <a 
+                data-aos="fade-up" 
+                data-aos-delay="300"
+                href="{{ !empty($settings['web_card3_link']) ? $settings['web_card3_link'] : (isset($allProducts[2]) ? route('storefront.product', $allProducts[2]->id) : route('storefront.shop')) }}"
+                class="p-6 flex flex-col justify-between space-y-3 relative group hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 block cursor-pointer"
+            >
+                <div>
+                    <span class="bg-[#9333EA] text-white text-[9px] font-sans font-bold px-2.5 py-0.5 rounded uppercase tracking-wider inline-block mb-2 shadow-sm">
+                        {{ $settings['web_card3_badge'] ?? 'POLO SHIRTS' }}
+                    </span>
+                    <h4 class="text-sm font-sans font-bold text-white tracking-wide group-hover:text-indigo-400 transition-colors">
+                        {{ $settings['web_card3_title'] ?? ($allProducts[2]->item_name ?? 'Essential Polos & Tees') }}
+                    </h4>
+                    <p class="text-xs text-gray-400 font-sans line-clamp-1 mt-0.5">
+                        {{ $settings['web_card3_subtext'] ?? 'Breathable Pima Fabric • Timeless Style' }}
+                    </p>
+                </div>
+                <div class="text-[10px] text-gray-400 font-sans tracking-wider uppercase pt-2 border-t border-white/10 flex justify-between items-center">
+                    <span>{{ $settings['web_card3_detail'] ?? 'BEST SELLER' }}</span>
+                    <span class="text-indigo-300 font-bold group-hover:translate-x-1 transition-transform">
+                        {{ isset($allProducts[2]) ? 'RS. ' . number_format($allProducts[2]->final_price) : 'EXPLORE' }} &rarr;
+                    </span>
+                </div>
+            </a>
+
+            <!-- Card 4 -->
+            <a 
+                data-aos="fade-up" 
+                data-aos-delay="400"
+                href="{{ !empty($settings['web_card4_link']) ? $settings['web_card4_link'] : (isset($allProducts[3]) ? route('storefront.product', $allProducts[3]->id) : route('storefront.shop')) }}"
+                class="p-6 flex flex-col justify-between space-y-3 relative group hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 block cursor-pointer"
+            >
+                <div>
+                    <span class="bg-emerald-600 text-white text-[9px] font-sans font-bold px-2.5 py-0.5 rounded uppercase tracking-wider inline-block mb-2 shadow-sm">
+                        {{ $settings['web_card4_badge'] ?? 'CASUAL SHORTS' }}
+                    </span>
+                    <h4 class="text-sm font-sans font-bold text-white tracking-wide group-hover:text-indigo-400 transition-colors">
+                        {{ $settings['web_card4_title'] ?? ($allProducts[3]->item_name ?? 'Tailored Casual Shorts') }}
+                    </h4>
+                    <p class="text-xs text-gray-400 font-sans line-clamp-1 mt-0.5">
+                        {{ $settings['web_card4_subtext'] ?? 'Relaxed Tailoring • Everyday Comfort' }}
+                    </p>
+                </div>
+                <div class="text-[10px] text-gray-400 font-sans tracking-wider uppercase pt-2 border-t border-white/10 flex justify-between items-center">
+                    <span>{{ $settings['web_card4_detail'] ?? 'NEW RELEASE' }}</span>
+                    <span class="text-indigo-300 font-bold group-hover:translate-x-1 transition-transform">
+                        {{ isset($allProducts[3]) ? 'RS. ' . number_format($allProducts[3]->final_price) : 'BUY NOW' }} &rarr;
+                    </span>
+                </div>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<!-- Scrollable Content Wrapper -->
+<div class="relative z-10 bg-white w-full shadow-[0_-15px_30px_rgba(0,0,0,0.08)]">
+
+    <!-- 1. CONTINUOUS HORIZONTAL FASHION STRIP (TICKER WITH HOVER PAUSE) -->
+    <div class="relative z-10 w-full bg-neutral-900 border-t border-b border-neutral-800 py-3.5 select-none overflow-hidden">
+        <div class="w-full relative flex items-center">
+            <div class="animate-infinite-scroll flex gap-3 px-2">
+                @php
+                    $stripProducts = $allProducts->count() > 0 ? $allProducts->concat($allProducts)->take(24) : collect();
+                @endphp
+                @foreach($stripProducts as $p)
+                    <a 
+                        href="{{ route('storefront.product', $p->id) }}" 
+                        class="w-[160px] sm:w-[200px] md:w-[240px] aspect-[4/5] shrink-0 relative bg-neutral-800 rounded-md overflow-hidden group border border-white/10 hover:border-indigo-500/50 hover:shadow-lg transition-all duration-300"
+                    >
+                        <img 
+                            src="{{ asset($p->display_image) }}" 
+                            alt="{{ $p->item_name }}" 
+                            class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out brightness-90 group-hover:brightness-100"
+                            x-on:error="$event.target.src = '/placeholders/outfitter_prod_1.jpg'"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent opacity-95 p-3 flex flex-col justify-end">
+                            <span class="text-[10px] font-sans font-bold text-white uppercase tracking-wider line-clamp-1 group-hover:text-indigo-300 transition-colors">
+                                {{ $p->item_name }}
+                            </span>
+                            <span class="text-[9px] font-sans font-semibold text-indigo-400">
+                                RS. {{ number_format($p->final_price) }}
+                            </span>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.5 FEATURED COLLECTIONS SECTION (ALPINE INTERACTIVE CATEGORY TABS & SLIDER) -->
+    <section class="py-20 bg-white overflow-hidden border-b border-gray-100" x-data="{
+        activeTab: 'ALL',
+        scrollCollection(direction) {
+            const el = this.$refs.colSlider;
+            const amount = direction === 'left' ? -320 : 320;
+            el.scrollBy({ left: amount, behavior: 'smooth' });
+        }
+    }">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 space-y-10">
+            
+            <div class="space-y-3 text-center">
+                <span 
+                    data-aos="fade-right" 
+                    class="text-[10px] sm:text-xs font-sans font-bold uppercase tracking-[0.3em] text-indigo-600 block"
                 >
-                    <span>SHOP NOW</span>
-                    <span>&rarr;</span>
-                </a>
+                    Exclusively Curated For You
+                </span>
+                <h2 
+                    data-aos="fade-left" 
+                    class="font-serif text-3xl sm:text-4xl md:text-5xl tracking-wide font-normal text-neutral-900 uppercase"
+                >
+                    Featured Menswear Collections
+                </h2>
+                <p 
+                    data-aos="fade-up" 
+                    class="text-xs sm:text-sm text-gray-500 max-w-[600px] mx-auto font-sans"
+                >
+                    Discover modern luxury wardrobe staples designed with clean minimal aesthetics and timeless craftsmanship.
+                </p>
+
+                <!-- Centered Category Filter Pills -->
+                <div 
+                    data-aos="zoom-in" 
+                    data-aos-delay="200"
+                    class="flex items-center justify-center gap-2 max-w-[1000px] mx-auto px-2 pt-4 flex-wrap"
+                >
+                    <button 
+                        @click="activeTab = 'ALL'"
+                        class="px-5 sm:px-6 py-2 rounded-full text-xs font-sans font-bold tracking-widest uppercase transition-all duration-300 cursor-pointer flex items-center gap-2 hover:scale-105 active:scale-95"
+                        :class="activeTab === 'ALL' ? 'bg-neutral-950 text-white shadow-md scale-105' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
+                    >
+                        <span>ALL</span>
+                    </button>
+                    @foreach($categories as $cat)
+                        <button 
+                            @click="activeTab = '{{ strtoupper($cat->name) }}'"
+                            class="px-5 sm:px-6 py-2 rounded-full text-xs font-sans font-bold tracking-widest uppercase transition-all duration-300 cursor-pointer flex items-center gap-2 hover:scale-105 active:scale-95"
+                            :class="activeTab === '{{ strtoupper($cat->name) }}' ? 'bg-neutral-950 text-white shadow-md scale-105' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
+                        >
+                            @if(!empty($cat->web_image))
+                                <img 
+                                    src="{{ asset($cat->web_image) }}" 
+                                    alt="{{ $cat->name }}" 
+                                    class="w-4 h-4 rounded-full object-cover shrink-0 border border-white/40"
+                                    x-on:error="$event.target.style.display = 'none'"
+                                >
+                            @endif
+                            <span>{{ $cat->name }}</span>
+                        </button>
+                    @endforeach
+                </div>
             </div>
 
-            <!-- 3 Trust Badges Below Button -->
+            <!-- Slider Navigation Bar with < and > Controls -->
+            <div 
+                data-aos="fade-up"
+                class="flex items-center justify-between border-b border-gray-100 pb-3 px-2 pt-2"
+            >
+                <span class="text-xs font-sans font-bold uppercase tracking-widest text-neutral-400">
+                    <span x-text="activeTab === 'ALL' ? 'All Items' : activeTab"></span>
+                </span>
+                <div class="flex items-center gap-2">
+                    <button 
+                        @click="scrollCollection('left')" 
+                        class="w-9 h-9 rounded-full border border-gray-200 bg-white text-neutral-800 hover:bg-neutral-900 hover:text-white flex items-center justify-center transition-all shadow-xs cursor-pointer hover:scale-110 active:scale-95"
+                        aria-label="Previous Products"
+                    >
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    </button>
+                    <button 
+                        @click="scrollCollection('right')" 
+                        class="w-9 h-9 rounded-full border border-gray-200 bg-white text-neutral-800 hover:bg-neutral-900 hover:text-white flex items-center justify-center transition-all shadow-xs cursor-pointer hover:scale-110 active:scale-95"
+                        aria-label="Next Products"
+                    >
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Products Horizontal Carousel Slider -->
             <div 
                 data-aos="fade-up" 
-                data-aos-delay="350"
-                class="pt-4 flex items-center gap-6 text-xs text-gray-300 font-sans"
+                data-aos-delay="200"
+                x-ref="colSlider" 
+                class="flex gap-6 overflow-x-auto scrollbar-none scroll-smooth pb-4 select-none"
             >
-                <div class="flex items-center gap-2">
-                    <span class="text-[#c5a880]">🛡️</span>
-                    <span>Premium Quality</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-[#c5a880]">✂️</span>
-                    <span>Trendy Designs</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-[#c5a880]">⚙️</span>
-                    <span>Comfort Fit</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Side Cursive Script Overlay -->
-        <div 
-            data-aos="fade-left" 
-            data-aos-duration="1000"
-            class="hidden md:block select-none"
-        >
-            <span class="font-serif italic text-4xl lg:text-6xl text-[#c5a880]/70 tracking-wide drop-shadow-md">
-                Style Redefined
-            </span>
-        </div>
-    </div>
-</section>
-
-<!-- 2. CIRCULAR CATEGORY NAVIGATION ROW (REFERENCE MATCH) -->
-<section class="py-12 bg-white border-b border-gray-100 select-none">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-3 sm:grid-cols-6 gap-6 sm:gap-8 text-center">
-            
-            <!-- Category 1: Trousers -->
-            <a href="{{ route('storefront.shop', ['category' => 'TROUSERS']) }}" class="flex flex-col items-center group">
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden bg-gray-50 border border-gray-200 group-hover:border-[#b89758] transition-all duration-300 shadow-xs group-hover:scale-105 p-1">
-                    <img src="{{ asset('placeholders/product_4_main.jpg') }}" alt="Trousers" class="w-full h-full object-cover rounded-full" x-on:error="$event.target.src = '/placeholders/outfitter_prod_4.jpg'">
-                </div>
-                <h4 class="mt-3 text-xs font-sans font-bold uppercase tracking-wider text-neutral-900 group-hover:text-[#b89758] transition-colors">TROUSERS</h4>
-                <span class="text-[10px] text-gray-400 font-sans group-hover:underline">Shop Now &rarr;</span>
-            </a>
-
-            <!-- Category 2: Shirts -->
-            <a href="{{ route('storefront.shop', ['category' => 'SHIRTS']) }}" class="flex flex-col items-center group">
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden bg-gray-50 border border-gray-200 group-hover:border-[#b89758] transition-all duration-300 shadow-xs group-hover:scale-105 p-1">
-                    <img src="{{ asset('placeholders/product_1_main.jpg') }}" alt="Shirts" class="w-full h-full object-cover rounded-full" x-on:error="$event.target.src = '/placeholders/outfitter_prod_1.jpg'">
-                </div>
-                <h4 class="mt-3 text-xs font-sans font-bold uppercase tracking-wider text-neutral-900 group-hover:text-[#b89758] transition-colors">SHIRTS</h4>
-                <span class="text-[10px] text-gray-400 font-sans group-hover:underline">Shop Now &rarr;</span>
-            </a>
-
-            <!-- Category 3: T-Shirts -->
-            <a href="{{ route('storefront.shop', ['category' => 'T-SHIRTS']) }}" class="flex flex-col items-center group">
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden bg-gray-50 border border-gray-200 group-hover:border-[#b89758] transition-all duration-300 shadow-xs group-hover:scale-105 p-1">
-                    <img src="{{ asset('placeholders/product_2_main.jpg') }}" alt="T-Shirts" class="w-full h-full object-cover rounded-full" x-on:error="$event.target.src = '/placeholders/outfitter_prod_2.jpg'">
-                </div>
-                <h4 class="mt-3 text-xs font-sans font-bold uppercase tracking-wider text-neutral-900 group-hover:text-[#b89758] transition-colors">T-SHIRTS</h4>
-                <span class="text-[10px] text-gray-400 font-sans group-hover:underline">Shop Now &rarr;</span>
-            </a>
-
-            <!-- Category 4: Jeans -->
-            <a href="{{ route('storefront.shop', ['category' => 'JEANS']) }}" class="flex flex-col items-center group">
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden bg-gray-50 border border-gray-200 group-hover:border-[#b89758] transition-all duration-300 shadow-xs group-hover:scale-105 p-1">
-                    <img src="{{ asset('placeholders/product_3_main.jpg') }}" alt="Jeans" class="w-full h-full object-cover rounded-full" x-on:error="$event.target.src = '/placeholders/outfitter_prod_3.jpg'">
-                </div>
-                <h4 class="mt-3 text-xs font-sans font-bold uppercase tracking-wider text-neutral-900 group-hover:text-[#b89758] transition-colors">JEANS</h4>
-                <span class="text-[10px] text-gray-400 font-sans group-hover:underline">Shop Now &rarr;</span>
-            </a>
-
-            <!-- Category 5: New Arrivals -->
-            <a href="{{ route('storefront.shop', ['tag' => 'New Arrival']) }}" class="flex flex-col items-center group">
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden bg-gray-50 border border-gray-200 group-hover:border-[#b89758] transition-all duration-300 shadow-xs group-hover:scale-105 p-1">
-                    <img src="{{ asset('placeholders/product_5_main.jpg') }}" alt="New Arrivals" class="w-full h-full object-cover rounded-full" x-on:error="$event.target.src = '/placeholders/outfitter_prod_7.jpg'">
-                </div>
-                <h4 class="mt-3 text-xs font-sans font-bold uppercase tracking-wider text-neutral-900 group-hover:text-[#b89758] transition-colors">NEW ARRIVALS</h4>
-                <span class="text-[10px] text-gray-400 font-sans group-hover:underline">Shop Now &rarr;</span>
-            </a>
-
-            <!-- Category 6: Sale (% Badge) -->
-            <a href="{{ route('storefront.shop', ['tag' => 'Sale']) }}" class="flex flex-col items-center group">
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-red-600 text-white flex items-center justify-center font-serif text-3xl font-black shadow-xs group-hover:scale-105 transition-all duration-300">
-                    %
-                </div>
-                <h4 class="mt-3 text-xs font-sans font-bold uppercase tracking-wider text-red-600 group-hover:text-red-700 transition-colors">SALE</h4>
-                <span class="text-[10px] text-gray-400 font-sans group-hover:underline">Shop Now &rarr;</span>
-            </a>
-
-        </div>
-    </div>
-</section>
-
-<!-- 3. NEW ARRIVALS (REFERENCE MATCH: TABS + 6-COLUMN GRID) -->
-<section class="py-14 bg-white border-b border-gray-100" x-data="{
-    activeTab: 'ALL'
-}">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        
-        <!-- Header & Category Filter Tabs -->
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-2 border-b border-gray-100">
-            <!-- Title with Horizontal Gold Line -->
-            <div class="flex items-center gap-3">
-                <h2 class="font-serif text-2xl sm:text-3xl font-normal uppercase tracking-wide text-neutral-900">
-                    NEW ARRIVALS
-                </h2>
-                <div class="w-12 h-0.5 bg-[#b89758]"></div>
+                @foreach($allProducts as $product)
+                    @php
+                        $catName = strtoupper($product->category_relation ? $product->category_relation->name : '');
+                        $itemName = strtoupper($product->item_name);
+                    @endphp
+                    <div 
+                        class="w-[240px] sm:w-[270px] md:w-[290px] shrink-0 transform transition-all duration-500 hover:-translate-y-1.5"
+                        x-show="activeTab === 'ALL' || '{{ $catName }}' === activeTab || '{{ $catName }}'.includes(activeTab) || '{{ $itemName }}'.includes(activeTab)"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-95"
+                        x-transition:enter-end="opacity-100 scale-100"
+                    >
+                        @include('storefront.partials.product-card', ['product' => $product])
+                    </div>
+                @endforeach
             </div>
 
-            <!-- Tabs on Right -->
-            <div class="flex items-center gap-2 sm:gap-4 overflow-x-auto scrollbar-none text-xs font-sans font-semibold">
-                <button 
-                    @click="activeTab = 'ALL'"
-                    class="pb-1 transition-colors cursor-pointer"
-                    :class="activeTab === 'ALL' ? 'text-black font-bold border-b-2 border-black' : 'text-gray-400 hover:text-black'"
+            <!-- Bottom Explore Link -->
+            <div data-aos="fade-up" class="text-center pt-2">
+                <a 
+                    href="{{ route('storefront.shop') }}" 
+                    class="bg-[#333333] hover:bg-neutral-900 text-white px-8 py-3.5 text-xs uppercase tracking-[0.2em] font-sans font-bold transition-all duration-300 inline-block rounded-xs hover:scale-105 shadow-sm"
                 >
-                    All
-                </button>
-                <button 
-                    @click="activeTab = 'TROUSERS'"
-                    class="pb-1 transition-colors cursor-pointer"
-                    :class="activeTab === 'TROUSERS' ? 'text-black font-bold border-b-2 border-black' : 'text-gray-400 hover:text-black'"
-                >
-                    Trousers
-                </button>
-                <button 
-                    @click="activeTab = 'SHIRTS'"
-                    class="pb-1 transition-colors cursor-pointer"
-                    :class="activeTab === 'SHIRTS' ? 'text-black font-bold border-b-2 border-black' : 'text-gray-400 hover:text-black'"
-                >
-                    Shirts
-                </button>
-                <button 
-                    @click="activeTab = 'T-SHIRTS'"
-                    class="pb-1 transition-colors cursor-pointer"
-                    :class="activeTab === 'T-SHIRTS' ? 'text-black font-bold border-b-2 border-black' : 'text-gray-400 hover:text-black'"
-                >
-                    T-Shirts
-                </button>
-                <button 
-                    @click="activeTab = 'JEANS'"
-                    class="pb-1 transition-colors cursor-pointer"
-                    :class="activeTab === 'JEANS' ? 'text-black font-bold border-b-2 border-black' : 'text-gray-400 hover:text-black'"
-                >
-                    Jeans
-                </button>
+                    View all products
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. DYNAMIC NEW ARRIVALS SLIDER -->
+    @if(count($newArrivals) > 0)
+    <section class="w-full bg-[#fafafa] py-20 overflow-hidden border-t border-gray-100 select-none" x-data="{
+        scrollArrivals(direction) {
+            const el = this.$refs.arrSlider;
+            const amount = direction === 'left' ? -320 : 320;
+            el.scrollBy({ left: amount, behavior: 'smooth' });
+        }
+    }">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 space-y-10">
+            <!-- Header & Controls -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="space-y-1 text-center sm:text-left">
+                    <span data-aos="fade-right" class="text-[10px] sm:text-xs font-sans font-bold uppercase tracking-[0.3em] text-indigo-600 block">
+                        Fresh Modern Drops
+                    </span>
+                    <h2 data-aos="fade-left" class="font-serif text-3xl sm:text-4xl lg:text-5xl tracking-wide font-normal text-neutral-900 uppercase">
+                        New Arrivals
+                    </h2>
+                </div>
+                
+                <!-- Slider Arrows -->
+                <div data-aos="fade-left" class="flex items-center gap-2">
+                    <button 
+                        @click="scrollArrivals('left')" 
+                        class="w-10 h-10 rounded-full border border-gray-200 bg-white text-black flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-xs cursor-pointer hover:scale-110 active:scale-95"
+                        aria-label="Previous Products"
+                    >
+                        <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                    </button>
+                    <button 
+                        @click="scrollArrivals('right')" 
+                        class="w-10 h-10 rounded-full border border-gray-200 bg-white text-black flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-xs cursor-pointer hover:scale-110 active:scale-95"
+                        aria-label="Next Products"
+                    >
+                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Slider Track with Clean ProductCards -->
+            <div 
+                data-aos="fade-up"
+                data-aos-delay="150"
+                x-ref="arrSlider" 
+                class="flex gap-5 sm:gap-6 overflow-x-auto scrollbar-none scroll-smooth pb-4 select-none"
+            >
+                @foreach($newArrivals as $prod)
+                    <div class="w-[230px] sm:w-[260px] md:w-[280px] shrink-0 transform transition-all duration-300 hover:-translate-y-1.5">
+                        @include('storefront.partials.product-card', ['product' => $prod])
+                    </div>
+                @endforeach
+            </div>
+
+            <div data-aos="fade-up" class="text-center pt-2">
                 <a 
                     href="{{ route('storefront.shop', ['tag' => 'New Arrival']) }}" 
-                    class="ml-2 border border-gray-300 hover:border-black text-neutral-800 text-[11px] px-3 py-1 rounded-[2px] transition-colors whitespace-nowrap"
+                    class="bg-[#222222] hover:bg-black text-white px-8 py-3.5 text-xs uppercase tracking-[0.2em] font-sans font-bold transition-all duration-300 inline-block rounded-xs hover:scale-105 shadow-sm"
                 >
-                    View All &rarr;
+                    Explore all new arrivals
                 </a>
             </div>
         </div>
+    </section>
+    @endif
 
-        <!-- 6-Column Responsive Product Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
-            @foreach($allProducts->take(12) as $product)
-                @php
-                    $catName = strtoupper($product->category_relation ? $product->category_relation->name : '');
-                    $itemName = strtoupper($product->item_name);
-                @endphp
-                <div 
-                    x-show="activeTab === 'ALL' || '{{ $catName }}' === activeTab || '{{ $catName }}'.includes(activeTab) || '{{ $itemName }}'.includes(activeTab)"
-                    x-transition
-                >
-                    @include('storefront.partials.product-card', ['product' => $product])
-                </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-<!-- 4. TWO PROMOTIONAL SPLIT BANNERS (REFERENCE MATCH: SHIRTS & TROUSERS) -->
-<section class="py-10 bg-white">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <!-- Banner 1 (Left - Beige / Light Shirts Collection) -->
-        <div class="relative bg-[#f4efe8] rounded overflow-hidden min-h-[220px] sm:min-h-[260px] flex items-center p-6 sm:p-10 group">
-            <div class="relative z-10 max-w-[280px] space-y-2">
-                <span class="text-[10px] font-sans font-bold tracking-widest uppercase text-[#b89758] block">
-                    CLASSIC • MODERN • TIMELESS
-                </span>
-                <h3 class="font-serif text-2xl sm:text-3xl font-normal uppercase text-neutral-900 leading-tight">
-                    PREMIUM SHIRTS COLLECTION
-                </h3>
-                <div class="pt-3">
-                    <a 
-                        href="{{ route('storefront.shop', ['category' => 'SHIRTS']) }}" 
-                        class="inline-flex items-center gap-2 bg-[#b89758] hover:bg-[#a6864a] text-black text-xs font-sans font-bold uppercase tracking-wider py-2.5 px-5 rounded-[2px] transition-colors"
-                    >
-                        <span>SHOP SHIRTS</span>
-                        <span>&rarr;</span>
-                    </a>
-                </div>
-            </div>
-            <!-- Flatlay Product Image on Right -->
-            <div class="absolute right-0 top-0 bottom-0 w-1/2 flex items-center justify-end overflow-hidden">
-                <img 
-                    src="{{ asset('placeholders/product_1_main.jpg') }}" 
-                    alt="Shirts Collection" 
-                    class="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                    x-on:error="$event.target.src = '/placeholders/outfitter_prod_1.jpg'"
-                >
-            </div>
-        </div>
-
-        <!-- Banner 2 (Right - Dark Luxury Stylish Trousers) -->
-        <div class="relative bg-[#141414] rounded overflow-hidden min-h-[220px] sm:min-h-[260px] flex items-center p-6 sm:p-10 group">
-            <div class="relative z-10 max-w-[280px] space-y-2">
-                <span class="text-[10px] font-sans font-bold tracking-widest uppercase text-gray-400 block">
-                    PERFECT FIT FOR EVERY OCCASION
-                </span>
-                <h3 class="font-serif text-2xl sm:text-3xl font-normal uppercase text-white leading-tight">
-                    STYLISH TROUSERS
-                </h3>
-                <div class="pt-3">
-                    <a 
-                        href="{{ route('storefront.shop', ['category' => 'TROUSERS']) }}" 
-                        class="inline-flex items-center gap-2 bg-[#b89758] hover:bg-[#a6864a] text-black text-xs font-sans font-bold uppercase tracking-wider py-2.5 px-5 rounded-[2px] transition-colors"
-                    >
-                        <span>SHOP TROUSERS</span>
-                        <span>&rarr;</span>
-                    </a>
-                </div>
-            </div>
-            <!-- Flatlay Product Image on Right -->
-            <div class="absolute right-0 top-0 bottom-0 w-1/2 flex items-center justify-end overflow-hidden">
-                <img 
-                    src="{{ asset('placeholders/product_4_main.jpg') }}" 
-                    alt="Trousers Collection" 
-                    class="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500 brightness-95"
-                    x-on:error="$event.target.src = '/placeholders/outfitter_prod_4.jpg'"
-                >
-            </div>
-        </div>
-
-    </div>
-</section>
-
-<!-- 5. BEST SELLERS (REFERENCE MATCH: 6-COLUMN PRODUCT GRID) -->
-<section class="py-14 bg-white border-b border-gray-100">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        
-        <div class="flex items-center justify-between pb-2 border-b border-gray-100">
-            <!-- Title with Horizontal Gold Line -->
-            <div class="flex items-center gap-3">
-                <h2 class="font-serif text-2xl sm:text-3xl font-normal uppercase tracking-wide text-neutral-900">
-                    BEST SELLERS
+    <!-- 3. TRENDING NOW SECTION -->
+    @php
+        $trendingProducts = $allProducts->filter(function($p) {
+            return in_array($p->promo_tag, ['Trending', 'Featured', 'Hot']);
+        })->values();
+        if ($trendingProducts->count() < 4) {
+            $trendingProducts = $allProducts->slice(1, 5)->values();
+        }
+    @endphp
+    @if(count($trendingProducts) > 0)
+    <section class="bg-white py-20 overflow-hidden border-t border-gray-100">
+        <div class="max-w-[1400px] mx-auto px-6 space-y-10">
+            <div data-aos="fade-up" class="text-center space-y-3">
+                <h2 class="font-serif text-3xl sm:text-4xl tracking-wide font-normal text-neutral-800 uppercase">
+                    Trending Now
                 </h2>
-                <div class="w-12 h-0.5 bg-[#b89758]"></div>
-            </div>
-
-            <a 
-                href="{{ route('storefront.shop', ['tag' => 'Best Seller']) }}" 
-                class="border border-gray-300 hover:border-black text-neutral-800 text-[11px] px-3.5 py-1.5 rounded-[2px] transition-colors"
-            >
-                View All &rarr;
-            </a>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
-            @foreach($bestSellers->take(6) as $product)
-                @include('storefront.partials.product-card', ['product' => $product])
-            @endforeach
-        </div>
-    </div>
-</section>
-
-<!-- 6. 4 TRUST BADGES (REFERENCE MATCH) -->
-<section class="py-12 bg-white border-b border-gray-100 select-none">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center font-sans">
-        
-        <div class="flex flex-col items-center p-4">
-            <span class="text-3xl mb-2">🚚</span>
-            <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-900">Free Delivery</h4>
-            <p class="text-xs text-gray-400 mt-0.5">All Over Pakistan</p>
-        </div>
-
-        <div class="flex flex-col items-center p-4">
-            <span class="text-3xl mb-2">💵</span>
-            <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-900">Cash On Delivery</h4>
-            <p class="text-xs text-gray-400 mt-0.5">Pay When You Receive</p>
-        </div>
-
-        <div class="flex flex-col items-center p-4">
-            <span class="text-3xl mb-2">📦</span>
-            <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-900">Easy Return</h4>
-            <p class="text-xs text-gray-400 mt-0.5">Hassle Free Returns</p>
-        </div>
-
-        <div class="flex flex-col items-center p-4">
-            <span class="text-3xl mb-2">🏅</span>
-            <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-900">Premium Quality</h4>
-            <p class="text-xs text-gray-400 mt-0.5">Best Fabric & Stitching</p>
-        </div>
-
-    </div>
-</section>
-
-<!-- 7. FOLLOW US ON INSTAGRAM (REFERENCE MATCH: 8 LIFESTYLE IMAGES) -->
-<section class="py-14 bg-white select-none">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        
-        <div class="flex items-center justify-between pb-2">
-            <div class="flex items-center gap-3">
-                <h2 class="font-serif text-2xl sm:text-3xl font-normal uppercase tracking-wide text-neutral-900">
-                    FOLLOW US ON INSTAGRAM
-                </h2>
-                <div class="w-12 h-0.5 bg-[#b89758]"></div>
-            </div>
-
-            <div class="flex items-center gap-3 text-xs">
-                <span class="text-gray-400">@trendhubstore</span>
-                <a 
-                    href="{{ $settings['web_instagram_link'] ?? 'https://instagram.com' }}" 
-                    target="_blank" 
-                    class="border border-gray-300 hover:border-black text-neutral-800 text-[11px] px-3.5 py-1.5 rounded-[2px] transition-colors"
-                >
-                    View Gallery &rarr;
-                </a>
-            </div>
-        </div>
-
-        <!-- 8 Grid Images -->
-        <div class="grid grid-cols-4 sm:grid-cols-8 gap-2 sm:gap-3">
-            @php
-                $instaPlaceholders = [
-                    'placeholders/product_1_main.jpg',
-                    'placeholders/outfitter_prod_5.jpg',
-                    'placeholders/outfitter_prod_1.jpg',
-                    'placeholders/product_3_main.jpg',
-                    'placeholders/outfitter_prod_7.jpg',
-                    'placeholders/product_4_main.jpg',
-                    'placeholders/outfitter_prod_2.jpg',
-                    'placeholders/outfitter_prod_6.jpg',
-                ];
-            @endphp
-            @foreach($instaPlaceholders as $idx => $img)
-                <div class="aspect-square overflow-hidden bg-gray-100 group relative">
-                    <img 
-                        src="{{ asset($img) }}" 
-                        alt="Instagram Fashion Drop" 
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        x-on:error="$event.target.src = '/placeholders/outfitter_prod_1.jpg'"
-                    >
-                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
-                        <i data-lucide="instagram" class="w-5 h-5"></i>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-    </div>
-</section>
-
-<!-- 8. NEWSLETTER SUBSCRIBE BAR (REFERENCE MATCH) -->
-<section class="bg-[#111111] py-8 text-white select-none border-t border-neutral-800">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="flex items-center gap-4 text-center md:text-left">
-            <div class="text-3xl text-[#c5a880]">
-                ✉️
-            </div>
-            <div>
-                <h4 class="font-sans font-bold text-sm sm:text-base uppercase tracking-wider text-white">
-                    SUBSCRIBE TO OUR NEWSLETTER
-                </h4>
-                <p class="text-xs text-gray-400 font-sans">
-                    Get the latest updates, new arrivals and exclusive offers.
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-sans">
+                    Most wanted luxury essentials
                 </p>
             </div>
-        </div>
 
-        <form onsubmit="event.preventDefault(); alert('Thank you for subscribing!'); this.reset();" class="flex w-full md:w-auto max-w-md">
-            <input 
-                type="email" 
-                placeholder="Enter your email address..." 
-                class="bg-white text-black text-xs px-4 py-2.5 rounded-l-md w-full md:w-72 focus:outline-none"
-                required
-            >
-            <button 
-                type="submit" 
-                class="bg-[#b89758] hover:bg-[#a6864a] text-black font-sans font-bold text-xs uppercase px-6 py-2.5 rounded-r-md transition-colors cursor-pointer shrink-0"
-            >
-                Subscribe
-            </button>
-        </form>
-    </div>
-</section>
+            <div data-aos="fade-up" data-aos-delay="150" class="grid grid-cols-2 md:grid-cols-5 gap-5">
+                @foreach($trendingProducts->take(5) as $product)
+                    <div class="transform transition-all duration-300 hover:-translate-y-1.5">
+                        @include('storefront.partials.product-card', ['product' => $product])
+                    </div>
+                @endforeach
+            </div>
+
+            <div data-aos="fade-up" class="pt-6 text-center">
+                <a 
+                    href="{{ route('storefront.shop', ['tag' => 'Trending']) }}" 
+                    class="bg-[#333333] hover:bg-neutral-900 text-white px-8 py-3 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-sans font-bold transition-all duration-300 inline-block rounded-xs hover:scale-105 shadow-sm"
+                >
+                    View all trending
+                </a>
+            </div>
+        </div>
+    </section>
+    @endif
+
+    <!-- 4. DYNAMIC BEST SELLERS SECTION -->
+    @if(count($bestSellers) > 0)
+    <section class="bg-[#fafafa] py-20 border-t border-gray-100 select-none">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 space-y-10">
+            <div data-aos="fade-up" class="text-center space-y-3">
+                <span class="text-[10px] sm:text-xs font-sans font-bold uppercase tracking-[0.3em] text-indigo-600 block">
+                    Top Rated Customer Favorites
+                </span>
+                <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl tracking-wide font-normal text-neutral-900 uppercase">
+                    Best Sellers
+                </h2>
+                <p class="text-xs sm:text-sm text-gray-500 max-w-[550px] mx-auto font-sans font-light">
+                    Our most in-demand wardrobe staples crafted with unmatched precision and premium fabrics.
+                </p>
+            </div>
+
+            <!-- Dynamic Product Grid -->
+            <div data-aos="fade-up" data-aos-delay="150" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+                @foreach($bestSellers->take(10) as $product)
+                    <div class="transform transition-all duration-300 hover:-translate-y-1.5">
+                        @include('storefront.partials.product-card', ['product' => $product])
+                    </div>
+                @endforeach
+            </div>
+
+            <div data-aos="fade-up" class="pt-6 text-center">
+                <a 
+                    href="{{ route('storefront.shop', ['tag' => 'Best Seller']) }}" 
+                    class="bg-[#222222] hover:bg-black text-white px-9 py-3.5 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-sans font-bold transition-all duration-300 inline-block rounded-xs hover:scale-105 shadow-md"
+                >
+                    View all best sellers
+                </a>
+            </div>
+        </div>
+    </section>
+    @endif
+
+    <!-- 5. FULL-WIDTH SEASONAL BANNER -->
+    @if(!empty($settings['web_home_banner_image']))
+    <section data-aos="zoom-in" data-aos-duration="900" class="relative w-full h-[350px] sm:h-[450px] overflow-hidden bg-black flex items-center justify-center">
+        <img 
+            src="{{ asset($settings['web_home_banner_image']) }}" 
+            alt="Promotion Banner" 
+            class="w-full h-full object-cover opacity-80 animate-hero-zoom"
+            x-on:error="$event.target.src = '/placeholders/outfitter_prod_7.jpg'"
+        >
+        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="relative z-10 text-center text-white px-6 space-y-3 max-w-2xl">
+            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.3em] text-gray-300">LIMITED TIME OFFER</span>
+            <h3 class="font-serif text-3xl sm:text-4xl md:text-5xl font-light uppercase tracking-wide">
+                {{ $settings['web_home_banner_text'] ?? 'Refined Luxury Tailoring' }}
+            </h3>
+            <p class="text-xs sm:text-sm text-gray-200 font-light">Crafted from long-staple cotton with clean cuts and precision stitching.</p>
+            <div class="pt-2">
+                <a href="{{ route('storefront.shop') }}" class="inline-block bg-white text-black font-bold text-xs uppercase tracking-widest px-8 py-3 rounded-full hover:bg-neutral-200 transition-all hover:scale-105 shadow-lg">
+                    Shop The Sale
+                </a>
+            </div>
+        </div>
+    </section>
+    @endif
+
+    <!-- 6. BRAND PILLARS / WHY TRENDHUB -->
+    <section class="py-16 bg-white select-none border-t border-gray-100">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center font-sans">
+            
+            <div data-aos="fade-up" data-aos-delay="100" class="space-y-2 p-6 rounded-xl border border-gray-100 hover:border-gray-200 hover:-translate-y-2 hover:shadow-lg transition-all duration-300 group">
+                <div class="w-12 h-12 mx-auto rounded-full bg-neutral-100 group-hover:bg-neutral-900 group-hover:text-white flex items-center justify-center text-black transition-colors duration-300">
+                    <i data-lucide="truck" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-black">Nationwide Express Delivery</h4>
+                <p class="text-xs text-gray-500 leading-relaxed">Dispatched within 24 hours. Free delivery on orders over PKR 5,000.</p>
+            </div>
+
+            <div data-aos="fade-up" data-aos-delay="200" class="space-y-2 p-6 rounded-xl border border-gray-100 hover:border-gray-200 hover:-translate-y-2 hover:shadow-lg transition-all duration-300 group">
+                <div class="w-12 h-12 mx-auto rounded-full bg-neutral-100 group-hover:bg-neutral-900 group-hover:text-white flex items-center justify-center text-black transition-colors duration-300">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-black">Premium Tailored Fabrics</h4>
+                <p class="text-xs text-gray-500 leading-relaxed">Sourced from top mills ensuring breathability, durability, and comfort.</p>
+            </div>
+
+            <div data-aos="fade-up" data-aos-delay="300" class="space-y-2 p-6 rounded-xl border border-gray-100 hover:border-gray-200 hover:-translate-y-2 hover:shadow-lg transition-all duration-300 group">
+                <div class="w-12 h-12 mx-auto rounded-full bg-neutral-100 group-hover:bg-neutral-900 group-hover:text-white flex items-center justify-center text-black transition-colors duration-300">
+                    <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-black">7-Day Easy Exchange</h4>
+                <p class="text-xs text-gray-500 leading-relaxed">Size doesn't fit? Exchange your apparel effortlessly within 7 days.</p>
+            </div>
+
+            <div data-aos="fade-up" data-aos-delay="400" class="space-y-2 p-6 rounded-xl border border-gray-100 hover:border-gray-200 hover:-translate-y-2 hover:shadow-lg transition-all duration-300 group">
+                <div class="w-12 h-12 mx-auto rounded-full bg-neutral-100 group-hover:bg-neutral-900 group-hover:text-white flex items-center justify-center text-black transition-colors duration-300">
+                    <i data-lucide="message-square" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-black">Dedicated Support</h4>
+                <p class="text-xs text-gray-500 leading-relaxed">Personal styling and sizing advice available anytime on WhatsApp.</p>
+            </div>
+        </div>
+    </section>
+
+</div>
 
 @endsection
